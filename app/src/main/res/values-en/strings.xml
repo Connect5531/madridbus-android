@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MadridBus</string>
+    <string name="tabItemLines">Lines</string>
+    <string name="tabItemFavorites">Favorites</string>
+    <string name="tabItemMap">Map</string>
+    <string name="action_settings">Settings</string>
+</resources>
