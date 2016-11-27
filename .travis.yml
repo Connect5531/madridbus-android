@@ -14,8 +14,8 @@ env:
 
 android:
   components:
-    # platform-tools
-    # tools
+    - platform-tools
+    - tools
     - build-tools-$ANDROID_BUILD_TOOLS_VERSION
     - android-$ANDROID_API_LEVEL
     # Google Play Services
@@ -27,3 +27,8 @@ android:
     - extra-android-m2repository
     # Specify at least one system image
     - sys-img-armeabi-v7a-android-$ANDROID_API_LEVEL
+
+licenses:
+    - 'android-sdk-preview-license-.+'
+    - 'android-sdk-license-.+'
+    - 'google-gdk-license-.+'
