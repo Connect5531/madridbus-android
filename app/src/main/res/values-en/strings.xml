@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">MadridBus</string>
 
@@ -5,10 +6,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_settings">Ajustes</string>
 
-    <string name="tabItemMap">Mapa</string>
-    <string name="tabItemLines">Lineas</string>
-    <string name="tabItemFavorites">Favoritos</string>
-
-
-
+    <string name="tabItemMap">Map</string>
+    <string name="tabItemLines">Lines</string>
+    <string name="tabItemFavorites">Favorites</string>
 </resources>
