@@ -1,5 +1,9 @@
 language: android
+jdk: oraclejdk8
+# Turn off caching to avoid any caching problems
+cache: false
 android:
+
         components:
                 - platform-tools
                 - build-tools-25.0.0
