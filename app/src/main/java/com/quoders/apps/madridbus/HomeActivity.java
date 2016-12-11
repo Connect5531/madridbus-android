@@ -23,8 +23,7 @@ public class HomeActivity extends AppCompatActivity implements
         HomeContract.View,
         NavigationView.OnNavigationItemSelectedListener,
         HomeMapFragment.OnFragmentInteractionListener,
-        LinesFragment.OnListFragmentInteractionListener,
-        TabLayout.OnTabSelectedListener {
+        LinesFragment.OnListFragmentInteractionListener {
 
     public static final int TAB_MAP_POSITION = 0;
     public static final int TAB_LINES_POSITION = 1;
@@ -39,10 +38,6 @@ public class HomeActivity extends AppCompatActivity implements
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        initTabLayout();
-
-        initFabSearch();
-
         initNavigationDrawer(toolbar);
 
         displayMapView();
@@ -50,21 +45,6 @@ public class HomeActivity extends AppCompatActivity implements
         mPresenter = new HomePresenter(this);
     }
 
-    private void initTabLayout() {
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayoutHome);
-        tabLayout.addOnTabSelectedListener(this);
-    }
-
-    private void initFabSearch() {
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-    }
 
     private void initNavigationDrawer(Toolbar toolbar) {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -152,31 +132,6 @@ public class HomeActivity extends AppCompatActivity implements
 
     @Override
     public void onListFragmentInteraction(DummyContent.DummyItem item) {
-
-    }
-
-    @Override
-    public void onTabSelected(TabLayout.Tab tab) {
-        switch (tab.getPosition()) {
-            case TAB_MAP_POSITION:
-                mPresenter.onMapTabSelected();
-                break;
-            case TAB_LINES_POSITION:
-                mPresenter.onLinesTabSelected();
-                break;
-            case TAB_FAVORITES_POSITION:
-                mPresenter.onFavoritesTabSelected();
-                break;
-        }
-    }
-
-    @Override
-    public void onTabUnselected(TabLayout.Tab tab) {
-
-    }
-
-    @Override
-    public void onTabReselected(TabLayout.Tab tab) {
 
     }
 }
