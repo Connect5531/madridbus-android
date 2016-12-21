@@ -1,11 +1,10 @@
-package com.quoders.apps.madridbus;
+package com.quoders.apps.madridbus.ui.home;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
-import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,8 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
+import com.quoders.apps.madridbus.R;
 import com.quoders.apps.madridbus.ui.lines.LinesFragment;
 import com.quoders.apps.madridbus.ui.lines.dummy.DummyContent;
 import com.quoders.apps.madridbus.ui.map.HomeMapFragment;
@@ -25,26 +24,48 @@ public class HomeActivity extends AppCompatActivity implements
         HomeMapFragment.OnFragmentInteractionListener,
         LinesFragment.OnListFragmentInteractionListener {
 
-    public static final int TAB_MAP_POSITION = 0;
-    public static final int TAB_LINES_POSITION = 1;
-    public static final int TAB_FAVORITES_POSITION = 2;
-
     private HomeContract.Presenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
+        Toolbar toolbar = initToolBar();
         initNavigationDrawer(toolbar);
-
+        initBottomNavigation();
         displayMapView();
 
         mPresenter = new HomePresenter(this);
     }
 
+    private void initBottomNavigation() {
+        BottomNavigationView bottomNavigationView = (BottomNavigationView)findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.action_map:
+                                mPresenter.onMapTabSelected();
+                                break;
+                            case R.id.action_list:
+                                mPresenter.onLinesTabSelected();
+                                break;
+                            case R.id.action_favorites:
+                                mPresenter.onFavoritesTabSelected();
+                                break;
+                        }
+                        return true;
+                    }
+                });
+    }
+
+    private Toolbar initToolBar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        return toolbar;
+    }
 
     private void initNavigationDrawer(Toolbar toolbar) {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

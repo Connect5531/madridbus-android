@@ -1,6 +1,8 @@
-package com.quoders.apps.madridbus;
+package com.quoders.apps.madridbus.ui.home;
 
 import android.support.annotation.NonNull;
+
+import com.quoders.apps.madridbus.BaseView;
 
 public class HomePresenter implements HomeContract.Presenter {
 
