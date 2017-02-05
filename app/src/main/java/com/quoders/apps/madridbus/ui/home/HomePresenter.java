@@ -4,10 +4,13 @@ import android.support.annotation.NonNull;
 
 import com.quoders.apps.madridbus.BaseView;
 
+import javax.inject.Inject;
+
 public class HomePresenter implements HomeContract.Presenter {
 
     private HomeContract.View mView;
 
+    @Inject
     public HomePresenter(@NonNull HomeContract.View view) {
         mView = view;
     }
@@ -27,13 +30,14 @@ public class HomePresenter implements HomeContract.Presenter {
         mView.displayFavoritesView();
     }
 
+
     @Override
-    public void onViewAttached(BaseView view) {
+    public void start() {
 
     }
 
     @Override
-    public void onViewDetached() {
+    public void stop() {
 
     }
 }

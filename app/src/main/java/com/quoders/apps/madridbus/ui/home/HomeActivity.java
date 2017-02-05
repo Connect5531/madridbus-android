@@ -13,10 +13,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.quoders.apps.madridbus.MadridBusApplication;
 import com.quoders.apps.madridbus.R;
+import com.quoders.apps.madridbus.model.rest.LineInfoEmt;
 import com.quoders.apps.madridbus.ui.lines.LinesFragment;
-import com.quoders.apps.madridbus.ui.lines.dummy.DummyContent;
 import com.quoders.apps.madridbus.ui.map.HomeMapFragment;
+
+import javax.inject.Inject;
 
 public class HomeActivity extends AppCompatActivity implements
         HomeContract.View,
@@ -24,19 +27,23 @@ public class HomeActivity extends AppCompatActivity implements
         HomeMapFragment.OnFragmentInteractionListener,
         LinesFragment.OnListFragmentInteractionListener {
 
-    private HomeContract.Presenter mPresenter;
+    @Inject
+    HomePresenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        DaggerHomeComponent.builder()
+                .homePresenterModule(new HomePresenterModule(this))
+                .madridBusAppComponent(((MadridBusApplication)getApplication()).getApplicationComponent())
+                .build().inject(this);
+
         Toolbar toolbar = initToolBar();
         initNavigationDrawer(toolbar);
         initBottomNavigation();
         displayMapView();
-
-        mPresenter = new HomePresenter(this);
     }
 
     private void initBottomNavigation() {
@@ -91,7 +98,7 @@ public class HomeActivity extends AppCompatActivity implements
     public void displayLinesView() {
         LinesFragment linesFragment = (LinesFragment) getSupportFragmentManager().findFragmentByTag(LinesFragment.FRAGMENT_TAG);
         if(linesFragment == null) {
-            linesFragment = LinesFragment.newInstance(1);
+            linesFragment = LinesFragment.newInstance();
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayoutHomeContainer, linesFragment).commit();
     }
@@ -152,7 +159,12 @@ public class HomeActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem item) {
+    public void onListFragmentInteraction(LineInfoEmt item) {
+
+    }
+
+    @Override
+    public void setPresenter(Object presenter) {
 
     }
 }

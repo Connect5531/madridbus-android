@@ -9,26 +9,35 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.quoders.apps.madridbus.MadridBusApplication;
 import com.quoders.apps.madridbus.R;
-import com.quoders.apps.madridbus.ui.lines.dummy.DummyContent;
-import com.quoders.apps.madridbus.ui.lines.dummy.DummyContent.DummyItem;
+import com.quoders.apps.madridbus.domain.network.EmtRestApi;
+import com.quoders.apps.madridbus.model.rest.LineInfoEmt;
+import com.quoders.apps.madridbus.model.rest.ListLineInfoEmt;
+
+import java.util.ArrayList;
+
+import javax.inject.Inject;
+
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class LinesFragment extends Fragment {
 
     public static final String FRAGMENT_TAG = "com.quoders.apps.madridbus.ui.lines.LinesFragment.FRAGMENT_TAG";
 
     private OnListFragmentInteractionListener mListener;
+    private LinesRecyclerViewAdapter mAdapter;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
+    @Inject
+    EmtRestApi mEmtRestApi;
+
     public LinesFragment() {
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static LinesFragment newInstance(int columnCount) {
+    public static LinesFragment newInstance() {
         LinesFragment fragment = new LinesFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
@@ -39,13 +48,44 @@ public class LinesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null) {
-        }
+        DaggerLinesComponent.builder()
+                .madridBusAppComponent(((MadridBusApplication)getActivity().getApplication()).getApplicationComponent())
+                .build().inject(this);
+
+
+        //  Get list lines
+        mEmtRestApi.getListLines("WEB.SERV.david.guerrero@quoders.com",
+                "AF04314A-2997-420E-A190-823D7EBA12DE", "04/01/2017")
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.newThread())
+                .subscribe(new Observer<ListLineInfoEmt>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(ListLineInfoEmt listLineInfoEmt) {
+                        if(listLineInfoEmt != null) {
+                            mAdapter.setItems(listLineInfoEmt.getResultValues());
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_lines_list, container, false);
 
         // Set the adapter
@@ -53,7 +93,8 @@ public class LinesFragment extends Fragment {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(new LinesRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            mAdapter = new LinesRecyclerViewAdapter(new ArrayList<LineInfoEmt>(), mListener);
+            recyclerView.setAdapter(mAdapter);
         }
         return view;
     }
@@ -78,6 +119,6 @@ public class LinesFragment extends Fragment {
 
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(LineInfoEmt item);
     }
 }

@@ -4,18 +4,19 @@ import android.app.Application;
 
 public class MadridBusApplication extends Application {
 
+    private MadridBusAppComponent mMadridBusAppComponent;
+
     @Override
     public void onCreate() {
         super.onCreate();
 
-/*
-        mRepositoryComponent = DaggerTasksRepositoryComponent.builder()
-                .applicationModule(new ApplicationModule((getApplicationContext())))
+        mMadridBusAppComponent = DaggerMadridBusAppComponent.builder()
+                .applicationModule(new ApplicationModule(this))
                 .build();
-*/
     }
 
-    /*public TasksRepositoryComponent getTasksRepositoryComponent() {
-        return mRepositoryComponent;
-    }*/
+    public MadridBusAppComponent getApplicationComponent() {
+        return mMadridBusAppComponent;
+    }
+
 }

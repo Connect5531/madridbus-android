@@ -13,12 +13,18 @@ android {
         versionCode 1
         versionName "1.0"
     }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    packagingOptions {
+        exclude 'META-INF/rxjava.properties'
+    }
+
     lintOptions {
         abortOnError false
     }
@@ -36,14 +42,22 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:25.1.0'
 
     compile 'com.google.code.gson:gson:2.8.0'
-    compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.jakewharton:butterknife:8.4.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
 
-    // Dagger dependencies
+    //  Retrofit
+    compile 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.0'
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+
+    // Dagger
     apt "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
     provided 'org.glassfish:javax.annotation:10.0-b28'
     compile "com.google.dagger:dagger:$rootProject.daggerVersion"
-    
+
+    //  RxJava
+    compile 'io.reactivex.rxjava2:rxjava:2.0.3'
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+
     testCompile 'junit:junit:4.12'
 }
