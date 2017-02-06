@@ -12,12 +12,9 @@ public class LinesContract {
 
     interface View extends BaseView<Presenter> {
 
-
-
     }
 
     interface Presenter extends BasePresenter {
-        Single<List<LineBase>> getListLines();
     }
 
 }
