@@ -4,6 +4,7 @@ package com.quoders.apps.madridbus.model.rest;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ListLineInfoEmt {
@@ -16,7 +17,11 @@ public class ListLineInfoEmt {
     private String resultDescription;
     @SerializedName("resultValues")
     @Expose
-    private List<LineInfoEmt> resultValues = null;
+    private List<LineInfoEmt> resultValues;
+
+    public ListLineInfoEmt() {
+        resultValues = new ArrayList<>();
+    }
 
     public Integer getResultCode() {
         return resultCode;

@@ -8,6 +8,9 @@
     <string name="navItemMap">Mapa</string>
     <string name="navItemLines">Lineas</string>
     <string name="navItemFavorites">Favoritos</string>
+    <string name="error_dialog_generic_title">Error</string>
+    <string name="error_dialog_line_list_message">Error loading list of lines. Please try again later.</string>
+    <string name="dialog_button_neutral">OK</string>
 
 
 </resources>

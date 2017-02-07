@@ -3,6 +3,8 @@ package com.quoders.apps.madridbus.ui.lines;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.ContentLoadingProgressBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,12 +16,15 @@ import com.quoders.apps.madridbus.R;
 import com.quoders.apps.madridbus.model.rest.LineInfoEmt;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
 public class LinesFragment extends Fragment implements LinesContract.View {
 
     public static final String FRAGMENT_TAG = "com.quoders.apps.madridbus.ui.lines.LinesFragment.FRAGMENT_TAG";
+
+    ContentLoadingProgressBar mProgressBar;
 
     private OnListFragmentInteractionListener mListener;
     private LinesRecyclerViewAdapter mAdapter;
@@ -43,24 +48,24 @@ public class LinesFragment extends Fragment implements LinesContract.View {
 
         DaggerLinesComponent.builder()
                 .madridBusAppComponent(((MadridBusApplication)getActivity().getApplication()).getApplicationComponent())
+                .linesPresenterModule(new LinesPresenterModule(this))
                 .build().inject(this);
-
-        mPresenter.start();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_lines_list, container, false);
-
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            mAdapter = new LinesRecyclerViewAdapter(new ArrayList<LineInfoEmt>(), mListener);
-            recyclerView.setAdapter(mAdapter);
-        }
+        mProgressBar = (ContentLoadingProgressBar)view.findViewById(R.id.progressBarListsList);
+        initLinesListRecyclerView(view);
+        mPresenter.start();
         return view;
+    }
+
+    private void initLinesListRecyclerView(View view) {
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        mAdapter = new LinesRecyclerViewAdapter(new ArrayList<LineInfoEmt>(), mListener);
+        recyclerView.setAdapter(mAdapter);
     }
 
 
@@ -84,6 +89,32 @@ public class LinesFragment extends Fragment implements LinesContract.View {
     @Override
     public void setPresenter(LinesContract.Presenter presenter) {
 
+    }
+
+    @Override
+    public void showProgressBar() {
+        mProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void setLinesList(List<LineInfoEmt> resultValues) {
+        mAdapter.setItems(resultValues);
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showErrorLoadingList() {
+        new AlertDialog.Builder(getActivity())
+                .setTitle(R.string.error_dialog_generic_title)
+                .setMessage(R.string.error_dialog_line_list_message)
+                .setNeutralButton(R.string.dialog_button_neutral, null)
+                .show();
+
+    }
+
+    @Override
+    public void dismissProgressBar() {
+        mProgressBar.setVisibility(View.GONE);
     }
 
     public interface OnListFragmentInteractionListener {

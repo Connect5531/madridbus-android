@@ -1,5 +1,9 @@
 package com.quoders.apps.madridbus.ui.lines;
 
+import com.quoders.apps.madridbus.domain.lines.LineListInteractorImpl;
+import com.quoders.apps.madridbus.domain.lines.LinesListInteractor;
+import com.quoders.apps.madridbus.domain.network.EmtRestApi;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -15,5 +19,10 @@ public class LinesPresenterModule {
     @Provides
     LinesContract.View provideLinesContractView() {
         return mView;
+    }
+
+    @Provides
+    LinesListInteractor provideLinesListInteractor(EmtRestApi emtRestApi) {
+        return new LineListInteractorImpl(emtRestApi);
     }
 }

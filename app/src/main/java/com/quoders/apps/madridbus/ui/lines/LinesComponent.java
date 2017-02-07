@@ -6,7 +6,7 @@ import com.quoders.apps.madridbus.MadridBusAppComponent;
 import dagger.Component;
 
 @FragmentScoped
-@Component(dependencies = MadridBusAppComponent.class)
+@Component(dependencies = MadridBusAppComponent.class, modules = LinesPresenterModule.class)
 public interface LinesComponent {
 
     void inject(LinesFragment fragment);
