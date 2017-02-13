@@ -7,4 +7,6 @@ import io.reactivex.Observable;
 public interface LinesListInteractor {
 
     Observable<ListLineInfoEmt> getLinesList(String date);
+
+    void saveLinesList(ListLineInfoEmt lines);
 }

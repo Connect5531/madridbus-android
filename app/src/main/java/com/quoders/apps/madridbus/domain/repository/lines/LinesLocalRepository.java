@@ -19,31 +19,43 @@ public class LinesLocalRepository implements Repository<LineBase> {
     }
 
     @Override
-    public void add(LineBase line) {
-        mRealm.beginTransaction();
-        mRealm.copyToRealm(line);
-        mRealm.commitTransaction();
+    public void add(final LineBase line) {
+        mRealm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                mRealm.copyToRealm(line);
+            }
+        });
     }
 
     @Override
-    public void add(Iterable<LineBase> lines) {
-        mRealm.beginTransaction();
-        mRealm.copyToRealm(lines);
-        mRealm.commitTransaction();
+    public void add(final Iterable<LineBase> lines) {
+        mRealm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                mRealm.copyToRealm(lines);
+            }
+        });
     }
 
     @Override
-    public void update(LineBase line) {
-        mRealm.beginTransaction();
-        mRealm.copyToRealmOrUpdate(line);
-        mRealm.commitTransaction();
+    public void update(final LineBase line) {
+        mRealm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                mRealm.copyToRealmOrUpdate(line);
+            }
+        });
     }
 
     @Override
     public void remove(LineBase item) {
-        mRealm.beginTransaction();
-        final RealmResults<LineBase> results = mRealm.where(LineBase.class).equalTo(LineBase.class.c)
-        mRealm.where(LineBase.class).equalTo(LineBase.,userId).findAll();
-        mRealm.commitTransaction();
+        final RealmResults<LineBase> items = mRealm.where(LineBase.class).equalTo(LineBase.CODE, item.getCode()).findAll();
+        mRealm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                items.deleteAllFromRealm();
+            }
+        });
     }
 }
