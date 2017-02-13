@@ -1,4 +1,4 @@
-package com.quoders.apps.madridbus.domain.lines;
+package com.quoders.apps.madridbus.domain.interactors.lines;
 
 import com.quoders.apps.madridbus.domain.network.EmtRestApi;
 import com.quoders.apps.madridbus.model.rest.ListLineInfoEmt;

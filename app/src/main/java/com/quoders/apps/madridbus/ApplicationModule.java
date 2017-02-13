@@ -2,8 +2,11 @@ package com.quoders.apps.madridbus;
 
 import android.content.Context;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
+import io.realm.Realm;
 
 @Module
 public class ApplicationModule {
@@ -19,5 +22,11 @@ public class ApplicationModule {
         return mContext;
     }
 
+    @Singleton
+    @Provides
+    Realm provideRealm() {
+        Realm.init(mContext);
+        return Realm.getDefaultInstance();
+    }
 
 }

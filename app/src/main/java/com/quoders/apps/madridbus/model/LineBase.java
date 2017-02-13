@@ -2,10 +2,17 @@ package com.quoders.apps.madridbus.model;
 
 import java.util.List;
 
-public class LineBase {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class LineBase extends RealmObject {
+
+    public static final String CODE = "code";
+    
+    @PrimaryKey
+    private String code;
     private String name;
     private String shortName;
-    private String code;
     private List<StopBase> stops;
     private TransportType transportType;
 

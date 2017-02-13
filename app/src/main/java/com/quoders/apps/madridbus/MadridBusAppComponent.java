@@ -8,6 +8,7 @@ import com.quoders.apps.madridbus.domain.network.NetworkModule;
 import javax.inject.Singleton;
 
 import dagger.Component;
+import io.realm.Realm;
 import retrofit2.Retrofit;
 
 
@@ -21,4 +22,5 @@ public interface MadridBusAppComponent {
 
   EmtRestApi getEmtRestApi();
 
+  Realm getRealm();
 }

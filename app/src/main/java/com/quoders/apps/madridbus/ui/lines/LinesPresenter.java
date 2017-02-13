@@ -6,13 +6,14 @@ import com.quoders.apps.madridbus.model.rest.ListLineInfoEmt;
 
 import javax.inject.Inject;
 
-import io.reactivex.disposables.Disposable;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Consumer;
 
 public class LinesPresenter implements LinesContract.Presenter {
 
     private LinesContract.View mView;
     private LinesListInteractor mLinesListInteractor;
+    private final CompositeDisposable mDisposables = new CompositeDisposable();
 
     @Inject
     public LinesPresenter(LinesContract.View view, LinesListInteractor linesListInteractor) {
@@ -25,7 +26,7 @@ public class LinesPresenter implements LinesContract.Presenter {
 
         mView.showProgressBar();
 
-        mLinesListInteractor.getLinesList(DateUtils.getTodayShortFormat())
+        mDisposables.add(mLinesListInteractor.getLinesList(DateUtils.getTodayShortFormat())
                 .subscribe(new Consumer<ListLineInfoEmt>() {
                     @Override
                     public void accept(ListLineInfoEmt listLineInfoEmt) throws Exception {
@@ -36,11 +37,11 @@ public class LinesPresenter implements LinesContract.Presenter {
                             mView.showErrorLoadingList();
                         }
                     }
-                });
+                }));
     }
 
     @Override
     public void stop() {
-        //  TODO Unsubscribe
+        mDisposables.clear();
     }
 }
