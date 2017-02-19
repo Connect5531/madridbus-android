@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.quoders.apps.madridbus.MadridBusApplication;
 import com.quoders.apps.madridbus.R;
+import com.quoders.apps.madridbus.model.LineBase;
 import com.quoders.apps.madridbus.model.rest.LineInfoEmt;
 
 import java.util.ArrayList;
@@ -64,7 +65,7 @@ public class LinesFragment extends Fragment implements LinesContract.View {
     private void initLinesListRecyclerView(View view) {
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        mAdapter = new LinesRecyclerViewAdapter(new ArrayList<LineInfoEmt>(), mListener);
+        mAdapter = new LinesRecyclerViewAdapter(new ArrayList<LineBase>(), mListener);
         recyclerView.setAdapter(mAdapter);
     }
 
@@ -97,7 +98,7 @@ public class LinesFragment extends Fragment implements LinesContract.View {
     }
 
     @Override
-    public void setLinesList(List<LineInfoEmt> resultValues) {
+    public void setLinesList(List<LineBase> resultValues) {
         mAdapter.setItems(resultValues);
         mAdapter.notifyDataSetChanged();
     }
@@ -119,6 +120,6 @@ public class LinesFragment extends Fragment implements LinesContract.View {
 
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(LineInfoEmt item);
+        void onListFragmentInteraction(LineBase item);
     }
 }

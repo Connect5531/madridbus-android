@@ -3,9 +3,12 @@ package com.quoders.apps.madridbus.domain.repository.lines;
 import com.quoders.apps.madridbus.domain.repository.Repository;
 import com.quoders.apps.madridbus.model.LineBase;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import io.realm.Realm;
+import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
 
@@ -23,7 +26,7 @@ public class LinesLocalRepository implements Repository<LineBase> {
         mRealm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                mRealm.copyToRealm(line);
+                mRealm.copyToRealmOrUpdate(line);
             }
         });
     }
@@ -33,7 +36,7 @@ public class LinesLocalRepository implements Repository<LineBase> {
         mRealm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                mRealm.copyToRealm(lines);
+                mRealm.copyToRealmOrUpdate(lines);
             }
         });
     }
@@ -57,5 +60,10 @@ public class LinesLocalRepository implements Repository<LineBase> {
                 items.deleteAllFromRealm();
             }
         });
+    }
+
+    @Override
+    public List<LineBase> query() {
+        return mRealm.where(LineBase.class).findAll();
     }
 }

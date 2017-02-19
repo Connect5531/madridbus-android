@@ -15,6 +15,7 @@ import android.view.MenuItem;
 
 import com.quoders.apps.madridbus.MadridBusApplication;
 import com.quoders.apps.madridbus.R;
+import com.quoders.apps.madridbus.model.LineBase;
 import com.quoders.apps.madridbus.model.rest.LineInfoEmt;
 import com.quoders.apps.madridbus.ui.lines.LinesFragment;
 import com.quoders.apps.madridbus.ui.map.HomeMapFragment;
@@ -159,7 +160,7 @@ public class HomeActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onListFragmentInteraction(LineInfoEmt item) {
+    public void onListFragmentInteraction(LineBase item) {
 
     }
 

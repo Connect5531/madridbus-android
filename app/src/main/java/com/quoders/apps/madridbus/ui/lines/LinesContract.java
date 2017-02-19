@@ -15,7 +15,7 @@ public class LinesContract {
 
         void showProgressBar();
 
-        void setLinesList(List<LineInfoEmt> resultValues);
+        void setLinesList(List<LineBase> resultValues);
 
         void showErrorLoadingList();
 

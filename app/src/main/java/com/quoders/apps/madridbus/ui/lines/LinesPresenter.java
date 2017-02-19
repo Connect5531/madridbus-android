@@ -2,7 +2,10 @@ package com.quoders.apps.madridbus.ui.lines;
 
 import com.quoders.apps.madridbus.domain.interactors.lines.LinesListInteractor;
 import com.quoders.apps.madridbus.domain.utils.DateUtils;
+import com.quoders.apps.madridbus.model.LineBase;
 import com.quoders.apps.madridbus.model.rest.ListLineInfoEmt;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -29,22 +32,22 @@ public class LinesPresenter implements LinesContract.Presenter {
         mView.showProgressBar();
 
         mLinesListInteractor.getLinesList(DateUtils.getTodayShortFormat())
-                .subscribe(new Observer<ListLineInfoEmt>() {
+                .subscribe(new Observer<List<LineBase>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(ListLineInfoEmt listLineInfoEmt) {
-                        if(listLineInfoEmt != null && !listLineInfoEmt.getResultValues().isEmpty()) {
-                            mView.setLinesList(listLineInfoEmt.getResultValues());
-                            mLinesListInteractor.saveLinesList(listLineInfoEmt);
+                    public void onNext(List<LineBase> lineList) {
+                        if(lineList != null && !lineList.isEmpty()) {
+                            mView.setLinesList(lineList);
                         }
                     }
 
                     @Override
                     public void onError(Throwable e) {
+                        mView.dismissProgressBar();
                         mView.showErrorLoadingList();
                     }
 

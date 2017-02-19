@@ -7,6 +7,7 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 @Module
 public class ApplicationModule {
@@ -26,7 +27,10 @@ public class ApplicationModule {
     @Provides
     Realm provideRealm() {
         Realm.init(mContext);
-        return Realm.getDefaultInstance();
+        RealmConfiguration config = new RealmConfiguration.Builder()
+                .deleteRealmIfMigrationNeeded()
+                .build();
+        return Realm.getInstance(config);
     }
 
 }

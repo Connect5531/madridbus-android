@@ -7,16 +7,17 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.quoders.apps.madridbus.R;
+import com.quoders.apps.madridbus.model.LineBase;
 import com.quoders.apps.madridbus.model.rest.LineInfoEmt;
 
 import java.util.List;
 
 public class LinesRecyclerViewAdapter extends RecyclerView.Adapter<LinesRecyclerViewAdapter.ViewHolder> {
 
-    private List<LineInfoEmt> mValues;
+    private List<LineBase> mValues;
     private final LinesFragment.OnListFragmentInteractionListener mListener;
 
-    public LinesRecyclerViewAdapter(List<LineInfoEmt> items, LinesFragment.OnListFragmentInteractionListener listener) {
+    public LinesRecyclerViewAdapter(List<LineBase> items, LinesFragment.OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -30,8 +31,8 @@ public class LinesRecyclerViewAdapter extends RecyclerView.Adapter<LinesRecycler
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).getLabel());
-        holder.mContentView.setText(mValues.get(position).getNameB());
+        holder.mIdView.setText(mValues.get(position).getShortName());
+        holder.mContentView.setText(mValues.get(position).getName());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,7 +46,7 @@ public class LinesRecyclerViewAdapter extends RecyclerView.Adapter<LinesRecycler
         });
     }
 
-    public void setItems(List<LineInfoEmt> resultValues) {
+    public void setItems(List<LineBase> resultValues) {
         mValues = resultValues;
 
     }
@@ -59,7 +60,7 @@ public class LinesRecyclerViewAdapter extends RecyclerView.Adapter<LinesRecycler
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
-        public LineInfoEmt mItem;
+        public LineBase mItem;
 
         public ViewHolder(View view) {
             super(view);

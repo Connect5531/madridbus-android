@@ -1,12 +1,15 @@
 package com.quoders.apps.madridbus.domain.interactors.lines;
 
+import com.quoders.apps.madridbus.model.LineBase;
 import com.quoders.apps.madridbus.model.rest.ListLineInfoEmt;
+
+import java.util.List;
 
 import io.reactivex.Observable;
 
 public interface LinesListInteractor {
 
-    Observable<ListLineInfoEmt> getLinesList(String date);
+    Observable<List<LineBase>> getLinesList(String date);
 
-    void saveLinesList(ListLineInfoEmt lines);
+    void saveLinesList(List<LineBase> lines);
 }

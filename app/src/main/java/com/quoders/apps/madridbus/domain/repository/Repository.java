@@ -13,6 +13,8 @@ public interface Repository<T> {
 
     void remove(T item);
 
+    List<T> query();
+
 /*    void remove(Specification specification);
 
     List<T> query(Specification specification);*/

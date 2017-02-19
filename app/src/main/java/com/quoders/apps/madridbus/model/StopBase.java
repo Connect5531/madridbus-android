@@ -1,15 +1,23 @@
 package com.quoders.apps.madridbus.model;
 
-import java.util.List;
+import io.realm.RealmList;
+import io.realm.RealmObject;
 
-public class StopBase {
+public class StopBase extends RealmObject {
 
     private String name;
     private String code;
-    private TransportType transportType;
-    private List<LineBase> lines;
+    private int transportType;
+    private RealmList<LineBase> lines;
 
-    public StopBase(String name, String code, TransportType transportType, List<LineBase> lines) {
+    public StopBase() {
+        this.name = "";
+        this.code = "";
+        this.transportType = TransportType.BUS;
+        this.lines = new RealmList<>();
+    }
+
+    public StopBase(String name, String code, int transportType, RealmList<LineBase> lines) {
         this.name = name;
         this.code = code;
         this.transportType = transportType;
@@ -24,11 +32,11 @@ public class StopBase {
         return code;
     }
 
-    public TransportType getTransportType() {
+    public int getTransportType() {
         return transportType;
     }
 
-    public List<LineBase> getLines() {
+    public RealmList<LineBase> getLines() {
         return lines;
     }
 }

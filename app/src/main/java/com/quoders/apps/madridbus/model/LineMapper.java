@@ -6,11 +6,13 @@ import com.quoders.apps.madridbus.model.rest.ListLineInfoEmt;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.RealmList;
+
 public class LineMapper {
 
     public static LineBase MAP(LineInfoEmt lineInfoEmt) {
         return new LineBase(lineInfoEmt.getNameA(), lineInfoEmt.getNameB(),
-                lineInfoEmt.getLine(), new ArrayList<StopBase>(), TransportType.BUS);
+                lineInfoEmt.getLine(), new RealmList<StopBase>(), TransportType.BUS);
     }
 
     public static List<LineBase> MAP(ListLineInfoEmt listLineInfoEmt) {
