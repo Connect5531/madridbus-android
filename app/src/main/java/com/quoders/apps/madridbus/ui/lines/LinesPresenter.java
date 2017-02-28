@@ -35,13 +35,15 @@ public class LinesPresenter implements LinesContract.Presenter {
                 .subscribe(new Observer<List<LineBase>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-
                     }
 
                     @Override
                     public void onNext(List<LineBase> lineList) {
                         if(lineList != null && !lineList.isEmpty()) {
                             mView.setLinesList(lineList);
+                        } else {
+                            mView.dismissProgressBar();
+                            mView.showErrorLoadingList();
                         }
                     }
 
