@@ -4,9 +4,11 @@ import com.quoders.apps.madridbus.domain.repository.Repository;
 import com.quoders.apps.madridbus.model.LineBase;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
@@ -63,7 +65,19 @@ public class LinesLocalRepository implements Repository<LineBase> {
     }
 
     @Override
+    public Observable<List<LineBase>> query() {
+        return Observable.fromCallable(new Callable<LineBase>() {
+            @Override
+            public LineBase call() throws Exception {
+                final RealmResults<LineBase> all = mRealm.where(LineBase.class).findAll();
+            }
+        });
+    }
+
+/*
+    @Override
     public List<LineBase> query() {
         return mRealm.where(LineBase.class).findAll();
     }
+*/
 }

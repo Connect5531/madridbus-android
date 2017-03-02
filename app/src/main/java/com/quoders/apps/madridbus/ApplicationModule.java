@@ -1,6 +1,7 @@
 package com.quoders.apps.madridbus;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import javax.inject.Singleton;
 
@@ -33,4 +34,8 @@ public class ApplicationModule {
         return Realm.getInstance(config);
     }
 
+    @Provides
+    SharedPreferences provideSharedPreferences() {
+        return mContext.getSharedPreferences("mbus_shared_prefs", Context.MODE_PRIVATE);
+    }
 }

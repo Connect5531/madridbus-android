@@ -1,7 +1,7 @@
 package com.quoders.apps.madridbus.domain.repository;
 
 
-import java.util.List;
+import io.reactivex.Observable;
 
 public interface Repository<T> {
 
@@ -13,9 +13,5 @@ public interface Repository<T> {
 
     void remove(T item);
 
-    List<T> query();
-
-/*    void remove(Specification specification);
-
-    List<T> query(Specification specification);*/
+    Observable<T> query();
 }

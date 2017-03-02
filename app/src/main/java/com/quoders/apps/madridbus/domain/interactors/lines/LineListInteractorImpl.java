@@ -35,13 +35,6 @@ public class LineListInteractorImpl implements LinesListInteractor {
                 return mLinesRepository.query();
             }
         });
-
-
-        /*return mEmtRestApi.getListLines("WEB.SERV.david.guerrero@quoders.com",
-                "AF04314A-2997-420E-A190-823D7EBA12DE", date)
-                .onErrorReturnItem(new ListLineInfoEmt())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.newThread());*/
     }
 
     @Override
