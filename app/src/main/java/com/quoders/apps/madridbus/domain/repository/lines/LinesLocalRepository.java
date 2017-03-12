@@ -64,20 +64,19 @@ public class LinesLocalRepository implements Repository<LineBase> {
         });
     }
 
+
     @Override
-    public Observable<List<LineBase>> query() {
-        return Observable.fromCallable(new Callable<LineBase>() {
+    public Observable<LineBase> query() {
+        return Observable.empty();
+    }
+
+    @Override
+    public Observable<Iterable<LineBase>> queryItems() {
+        return Observable.fromCallable(new Callable<Iterable<LineBase>>() {
             @Override
-            public LineBase call() throws Exception {
-                final RealmResults<LineBase> all = mRealm.where(LineBase.class).findAll();
+            public Iterable<LineBase> call() throws Exception {
+                return mRealm.where(LineBase.class).findAll();
             }
         });
     }
-
-/*
-    @Override
-    public List<LineBase> query() {
-        return mRealm.where(LineBase.class).findAll();
-    }
-*/
 }

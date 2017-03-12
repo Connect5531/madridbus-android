@@ -2,21 +2,25 @@ package com.quoders.apps.madridbus;
 
 import android.app.Application;
 
+import com.quoders.apps.madridbus.domain.network.NetworkModule;
+
 public class MadridBusApplication extends Application {
 
-    private MadridBusAppComponent mMadridBusAppComponent;
+    private ApplicationComponent mApplicationComponent;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        mMadridBusAppComponent = DaggerMadridBusAppComponent.builder()
+        mApplicationComponent = DaggerApplicationComponent.builder()
                 .applicationModule(new ApplicationModule(this))
+                .networkModule(new NetworkModule())
                 .build();
+
     }
 
-    public MadridBusAppComponent getApplicationComponent() {
-        return mMadridBusAppComponent;
+    public ApplicationComponent getApplicationComponent() {
+        return mApplicationComponent;
     }
 
 }

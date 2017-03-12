@@ -14,4 +14,6 @@ public interface Repository<T> {
     void remove(T item);
 
     Observable<T> query();
+
+    Observable<Iterable<T>> queryItems();
 }

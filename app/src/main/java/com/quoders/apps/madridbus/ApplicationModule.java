@@ -1,7 +1,12 @@
 package com.quoders.apps.madridbus;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
+import com.quoders.apps.madridbus.domain.network.EmtRestApi;
+import com.quoders.apps.madridbus.domain.repository.Cache;
 
 import javax.inject.Singleton;
 
@@ -13,29 +18,31 @@ import io.realm.RealmConfiguration;
 @Module
 public class ApplicationModule {
 
-    private final Context mContext;
+    private final Application mApplication;
 
-    ApplicationModule(Context context) {
-        mContext = context;
+    ApplicationModule(Application application) {
+        mApplication = application;
     }
 
     @Provides
-    Context provideContext() {
-        return mContext;
+    @Singleton
+    Application providesApplication() {
+        return mApplication;
+    }
+
+    @Provides
+    @Singleton
+    SharedPreferences providesSharedPreferences(Application application) {
+        return PreferenceManager.getDefaultSharedPreferences(application);
     }
 
     @Singleton
     @Provides
     Realm provideRealm() {
-        Realm.init(mContext);
+        Realm.init(mApplication);
         RealmConfiguration config = new RealmConfiguration.Builder()
                 .deleteRealmIfMigrationNeeded()
                 .build();
         return Realm.getInstance(config);
-    }
-
-    @Provides
-    SharedPreferences provideSharedPreferences() {
-        return mContext.getSharedPreferences("mbus_shared_prefs", Context.MODE_PRIVATE);
     }
 }

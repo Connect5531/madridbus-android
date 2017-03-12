@@ -1,14 +1,18 @@
 package com.quoders.apps.madridbus.ui.lines;
 
-import com.quoders.apps.madridbus.utils.FragmentScoped;
-import com.quoders.apps.madridbus.MadridBusAppComponent;
+import com.quoders.apps.madridbus.ApplicationComponent;
+import com.quoders.apps.madridbus.di.FragmentScoped;
+import com.quoders.apps.madridbus.domain.repository.lines.di.LinesRepositoryComponent;
+import com.quoders.apps.madridbus.domain.repository.lines.di.LinesRepositoryModule;
 
 import dagger.Component;
 
 @FragmentScoped
-@Component(dependencies = MadridBusAppComponent.class, modules = LinesPresenterModule.class)
+@Component(dependencies = ApplicationComponent.class, modules = {LinesPresenterModule.class, LinesRepositoryModule.class})
 public interface LinesComponent {
 
-    void inject(LinesFragment fragment);
+    void inject(LinesFragment linesFragment);
+
+
 }
 

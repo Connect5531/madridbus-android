@@ -1,8 +1,8 @@
 package com.quoders.apps.madridbus.ui.lines;
 
+import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,17 +11,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.quoders.apps.madridbus.BaseFragment;
 import com.quoders.apps.madridbus.MadridBusApplication;
 import com.quoders.apps.madridbus.R;
+import com.quoders.apps.madridbus.domain.repository.lines.di.LinesRepositoryModule;
 import com.quoders.apps.madridbus.model.LineBase;
-import com.quoders.apps.madridbus.model.rest.LineInfoEmt;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
-public class LinesFragment extends Fragment implements LinesContract.View {
+public class LinesFragment extends BaseFragment implements LinesContract.View {
 
     public static final String FRAGMENT_TAG = "com.quoders.apps.madridbus.ui.lines.LinesFragment.FRAGMENT_TAG";
 
@@ -48,9 +49,11 @@ public class LinesFragment extends Fragment implements LinesContract.View {
         super.onCreate(savedInstanceState);
 
         DaggerLinesComponent.builder()
-                .madridBusAppComponent(((MadridBusApplication)getActivity().getApplication()).getApplicationComponent())
+                .applicationComponent(((MadridBusApplication)getActivity().getApplication()).getApplicationComponent())
                 .linesPresenterModule(new LinesPresenterModule(this))
+                .linesRepositoryModule(new LinesRepositoryModule())
                 .build().inject(this);
+
     }
 
     @Override

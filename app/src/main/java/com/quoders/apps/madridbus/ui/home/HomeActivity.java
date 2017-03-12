@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.quoders.apps.madridbus.BaseActivity;
 import com.quoders.apps.madridbus.MadridBusApplication;
 import com.quoders.apps.madridbus.R;
 import com.quoders.apps.madridbus.model.LineBase;
@@ -22,7 +23,7 @@ import com.quoders.apps.madridbus.ui.map.HomeMapFragment;
 
 import javax.inject.Inject;
 
-public class HomeActivity extends AppCompatActivity implements
+public class HomeActivity extends BaseActivity implements
         HomeContract.View,
         NavigationView.OnNavigationItemSelectedListener,
         HomeMapFragment.OnFragmentInteractionListener,
@@ -37,8 +38,8 @@ public class HomeActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_home);
 
         DaggerHomeComponent.builder()
+                .applicationComponent(getApplicationComponent())
                 .homePresenterModule(new HomePresenterModule(this))
-                .madridBusAppComponent(((MadridBusApplication)getApplication()).getApplicationComponent())
                 .build().inject(this);
 
         Toolbar toolbar = initToolBar();

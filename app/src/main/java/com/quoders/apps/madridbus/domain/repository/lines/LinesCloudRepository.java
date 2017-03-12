@@ -44,6 +44,10 @@ public class LinesCloudRepository implements Repository<ListLineInfoEmt> {
                 .onErrorReturnItem(new ListLineInfoEmt())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread());
+    }
 
+    @Override
+    public Observable<Iterable<ListLineInfoEmt>> queryItems() {
+        return null;
     }
 }

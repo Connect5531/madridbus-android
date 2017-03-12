@@ -1,29 +1,26 @@
 package com.quoders.apps.madridbus.ui.lines;
 
-import com.quoders.apps.madridbus.domain.interactors.lines.LinesListInteractor;
-import com.quoders.apps.madridbus.domain.utils.DateUtils;
+import com.quoders.apps.madridbus.domain.interactors.lines.LineListInteractor;
+import com.quoders.apps.madridbus.domain.repository.lines.LinesRepository;
+import com.quoders.apps.madridbus.domain.repository.lines.LinesRepositoryMapper;
 import com.quoders.apps.madridbus.model.LineBase;
-import com.quoders.apps.madridbus.model.rest.ListLineInfoEmt;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 
 public class LinesPresenter implements LinesContract.Presenter {
 
     private LinesContract.View mView;
-    private LinesListInteractor mLinesListInteractor;
+    private LineListInteractor mLinesListInteractor;
     private final CompositeDisposable mDisposables = new CompositeDisposable();
 
     @Inject
-    public LinesPresenter(LinesContract.View view, LinesListInteractor linesListInteractor) {
+    public LinesPresenter(LinesContract.View view, LinesRepository linesRepository) {
         this.mView = view;
-        this.mLinesListInteractor = linesListInteractor;
+
     }
 
     @Override
@@ -31,34 +28,33 @@ public class LinesPresenter implements LinesContract.Presenter {
 
         mView.showProgressBar();
 
-        mLinesListInteractor.getLinesList(DateUtils.getTodayShortFormat())
-                .subscribe(new Observer<List<LineBase>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                    }
+        mLinesListInteractor.execute(new Observer<Iterable<LineBase>>() {
+            @Override
+            public void onSubscribe(Disposable d) {
 
-                    @Override
-                    public void onNext(List<LineBase> lineList) {
-                        if(lineList != null && !lineList.isEmpty()) {
-                            mView.setLinesList(lineList);
-                        } else {
-                            mView.dismissProgressBar();
-                            mView.showErrorLoadingList();
-                        }
-                    }
+            }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        mView.dismissProgressBar();
-                        mView.showErrorLoadingList();
-                    }
+            @Override
+            public void onNext(Iterable<LineBase> lineList) {
+                if(lineList != null && !lineList.iterator().hasNext()) {
+                    mView.setLinesList(LinesRepositoryMapper.toList(lineList));
+                } else {
+                    mView.dismissProgressBar();
+                    mView.showErrorLoadingList();
+                }
+            }
 
-                    @Override
-                    public void onComplete() {
-                        mView.dismissProgressBar();
-                    }
-                });
+            @Override
+            public void onError(Throwable e) {
+                mView.dismissProgressBar();
+                mView.showErrorLoadingList();
+            }
 
+            @Override
+            public void onComplete() {
+                mView.dismissProgressBar();
+            }
+        });
     }
 
     @Override

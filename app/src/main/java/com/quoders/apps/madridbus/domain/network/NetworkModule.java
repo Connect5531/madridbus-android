@@ -13,17 +13,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NetworkModule {
 
     @Provides @Singleton
-    EmtRestApi provideEmtRestApi(Retrofit retrofit) {
-        return retrofit.create(EmtRestApi.class);
-    }
+    EmtRestApi provideEmtRestApi() {
 
-    @Provides @Singleton
-    Retrofit provideRetrofit() {
-        return new Retrofit.Builder()
-                .baseUrl(EmtRestDefs.API_URL)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(EmtRestDefs.API_URL)
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+
+        return retrofit.create(EmtRestApi.class);
     }
 }
 

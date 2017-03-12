@@ -8,5 +8,5 @@ import io.reactivex.Observable;
 
 public interface LinesRepository  {
 
-    Observable<List<LineBase>> getLinesList();
+    Observable<Iterable<LineBase>> getLinesList();
 }

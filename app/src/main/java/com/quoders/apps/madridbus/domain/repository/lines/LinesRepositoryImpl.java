@@ -27,7 +27,7 @@ public class LinesRepositoryImpl implements LinesRepository {
     }
 
     @Override
-    public Observable<List<LineBase>> getLinesList() {
+    public Observable<Iterable<LineBase>> getLinesList() {
         if (mCache.isDataOutdated()) {
             return getCloudLineListObservable();
         } else {
@@ -35,20 +35,15 @@ public class LinesRepositoryImpl implements LinesRepository {
         }
     }
 
-    private Observable<List<LineBase>> getLocalLineListObservable() {
-        return Observable.fromCallable(new Callable<List<LineBase>>() {
-            @Override
-            public List<LineBase> call() throws Exception {
-                return mLocalRepository.query();
-            }
-        });
+    private Observable<Iterable<LineBase>> getLocalLineListObservable() {
+        return mLocalRepository.queryItems();
     }
 
-    private Observable<List<LineBase>> getCloudLineListObservable() {
-        return Observable.fromCallable(new Callable<List<LineBase>>() {
+    private Observable<Iterable<LineBase>> getCloudLineListObservable() {
+        return Observable.fromCallable(new Callable<Iterable<LineBase>>() {
             @Override
-            public List<LineBase> call() throws Exception {
-                return mCloudRepository.query();
+            public Iterable<LineBase> call() throws Exception {
+                return LinesRepositoryMapper.map(mCloudRepository.query());
             }
         });
     }

@@ -1,6 +1,6 @@
 package com.quoders.apps.madridbus;
 
-import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.quoders.apps.madridbus.domain.network.EmtRestApi;
 import com.quoders.apps.madridbus.domain.network.NetworkModule;
@@ -9,18 +9,16 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 import io.realm.Realm;
-import retrofit2.Retrofit;
 
 
 @Singleton
 @Component(modules = {ApplicationModule.class, NetworkModule.class})
-public interface MadridBusAppComponent {
+public interface ApplicationComponent {
 
-  Context getAppContext();
+  void inject(BaseActivity baseActivity);
+  void inject(BaseFragment baseFragment);
 
-  Retrofit getRetrofit();
-
-  EmtRestApi getEmtRestApi();
-
-  Realm getRealm();
+  Realm providesReal();
+  SharedPreferences providesSharedPreferences();
+  EmtRestApi providesEmtApi();
 }

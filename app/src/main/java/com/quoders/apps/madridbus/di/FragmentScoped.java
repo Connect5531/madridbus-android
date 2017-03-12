@@ -1,4 +1,4 @@
-package com.quoders.apps.madridbus.utils;
+package com.quoders.apps.madridbus.di;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
