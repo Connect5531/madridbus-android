@@ -18,9 +18,9 @@ public class LinesPresenter implements LinesContract.Presenter {
     private final CompositeDisposable mDisposables = new CompositeDisposable();
 
     @Inject
-    public LinesPresenter(LinesContract.View view, LinesRepository linesRepository) {
+    public LinesPresenter(LinesContract.View view, LineListInteractor lineListInteractor) {
         this.mView = view;
-
+        this.mLinesListInteractor = lineListInteractor;
     }
 
     @Override
@@ -30,8 +30,8 @@ public class LinesPresenter implements LinesContract.Presenter {
 
         mLinesListInteractor.execute(new Observer<Iterable<LineBase>>() {
             @Override
-            public void onSubscribe(Disposable d) {
-
+            public void onSubscribe(Disposable disposable) {
+                mDisposables.add(disposable);
             }
 
             @Override

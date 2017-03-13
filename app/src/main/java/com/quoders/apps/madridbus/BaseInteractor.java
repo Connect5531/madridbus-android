@@ -8,9 +8,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public abstract class BaseInteractor {
 
-
     protected abstract Observable buildInteractorObservable();
-
 
     public void execute(Observer observer) {
         buildInteractorObservable()

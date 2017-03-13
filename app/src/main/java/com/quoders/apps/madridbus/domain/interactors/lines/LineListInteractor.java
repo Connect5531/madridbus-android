@@ -12,22 +12,15 @@ import io.reactivex.Observer;
 
 public class LineListInteractor extends BaseInteractor {
 
-    private EmtRestApi mEmtRestApi;
     private LinesRepository mLinesRepository;
 
     @Inject
-    public LineListInteractor(EmtRestApi mEmtRestApi, LinesRepository linesRepository) {
-        this.mEmtRestApi = mEmtRestApi;
+    public LineListInteractor(LinesRepository linesRepository) {
         this.mLinesRepository = linesRepository;
     }
 
     @Override
     protected Observable<Iterable<LineBase>> buildInteractorObservable() {
         return mLinesRepository.getLinesList();
-    }
-
-    @Override
-    public void execute(Observer observer) {
-        super.execute(observer);
     }
 }

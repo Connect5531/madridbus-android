@@ -2,8 +2,7 @@ package com.quoders.apps.madridbus.ui.lines;
 
 import com.quoders.apps.madridbus.ApplicationComponent;
 import com.quoders.apps.madridbus.di.FragmentScoped;
-import com.quoders.apps.madridbus.domain.repository.lines.di.LinesRepositoryComponent;
-import com.quoders.apps.madridbus.domain.repository.lines.di.LinesRepositoryModule;
+import com.quoders.apps.madridbus.domain.repository.lines.LinesRepositoryModule;
 
 import dagger.Component;
 

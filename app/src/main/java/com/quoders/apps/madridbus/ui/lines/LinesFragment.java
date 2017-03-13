@@ -1,6 +1,5 @@
 package com.quoders.apps.madridbus.ui.lines;
 
-import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.widget.ContentLoadingProgressBar;
@@ -14,7 +13,7 @@ import android.view.ViewGroup;
 import com.quoders.apps.madridbus.BaseFragment;
 import com.quoders.apps.madridbus.MadridBusApplication;
 import com.quoders.apps.madridbus.R;
-import com.quoders.apps.madridbus.domain.repository.lines.di.LinesRepositoryModule;
+import com.quoders.apps.madridbus.domain.repository.lines.LinesRepositoryModule;
 import com.quoders.apps.madridbus.model.LineBase;
 
 import java.util.ArrayList;
