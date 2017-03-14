@@ -1,7 +1,6 @@
 package com.quoders.apps.madridbus.ui.lines;
 
 import com.quoders.apps.madridbus.domain.interactors.lines.LineListInteractor;
-import com.quoders.apps.madridbus.domain.repository.lines.LinesRepository;
 import com.quoders.apps.madridbus.domain.repository.lines.LinesRepositoryMapper;
 import com.quoders.apps.madridbus.model.LineBase;
 
@@ -29,14 +28,14 @@ public class LinesPresenter implements LinesContract.Presenter {
         mView.showProgressBar();
 
         mLinesListInteractor.execute(new Observer<Iterable<LineBase>>() {
+
             @Override
-            public void onSubscribe(Disposable disposable) {
-                mDisposables.add(disposable);
+            public void onSubscribe(Disposable d) {
             }
 
             @Override
             public void onNext(Iterable<LineBase> lineList) {
-                if(lineList != null && !lineList.iterator().hasNext()) {
+                if(lineList != null && lineList.iterator().hasNext()) {
                     mView.setLinesList(LinesRepositoryMapper.toList(lineList));
                 } else {
                     mView.dismissProgressBar();

@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 
 import com.quoders.apps.madridbus.domain.repository.Cache;
 
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
@@ -20,6 +21,11 @@ public class LinesRepositoryCache extends Cache {
     @Inject
     public LinesRepositoryCache(SharedPreferences sharedPreferences) {
         super(sharedPreferences);
+    }
+
+    @Override
+    public void setCache() {
+        super.setCache(PREFS_LAST_LINES_LIST_CACHED_DATE, new Date().getTime());
     }
 
     @Override

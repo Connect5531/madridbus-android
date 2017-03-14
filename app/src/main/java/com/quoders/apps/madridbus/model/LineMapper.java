@@ -12,7 +12,7 @@ public class LineMapper {
 
     public static LineBase MAP(LineInfoEmt lineInfoEmt) {
         return new LineBase(lineInfoEmt.getNameA(), lineInfoEmt.getNameB(),
-                lineInfoEmt.getLine(), new RealmList<StopBase>(), TransportType.BUS);
+                lineInfoEmt.getLabel(), lineInfoEmt.getLine(), new RealmList<StopBase>(), TransportType.BUS);
     }
 
     public static List<LineBase> MAP(ListLineInfoEmt listLineInfoEmt) {

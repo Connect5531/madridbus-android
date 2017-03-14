@@ -12,16 +12,21 @@ public abstract class Cache {
         mSharedPreferences = sharedPreferences;
     }
 
+    public abstract void setCache();
+
+    protected void setCache(String prefsId, long cacheTimeMillis) {
+        mSharedPreferences.edit().putLong(prefsId, cacheTimeMillis).apply();
+    }
+
     public abstract boolean isDataOutdated();
 
-    protected boolean isDataOutdated(String prefsId, long maxCaheTimeMillis) {
+    protected boolean isDataOutdated(String prefsId, long maxCacheTimeMillis) {
+        boolean cacheOutdated = true;
         long cached = mSharedPreferences.getLong(prefsId, 0);
         if(cached != 0) {
             Date today = new Date();
-            if(today.getTime() - cached > maxCaheTimeMillis) {
-                return true;
-            }
+            cacheOutdated = (today.getTime() - cached) > maxCacheTimeMillis;
         }
-        return false;
+        return cacheOutdated;
     }
 }

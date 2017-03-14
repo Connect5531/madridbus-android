@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import com.quoders.apps.madridbus.R;
 import com.quoders.apps.madridbus.model.LineBase;
-import com.quoders.apps.madridbus.model.rest.LineInfoEmt;
 
 import java.util.List;
 
@@ -32,7 +31,7 @@ public class LinesRecyclerViewAdapter extends RecyclerView.Adapter<LinesRecycler
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.mIdView.setText(mValues.get(position).getShortName());
-        holder.mContentView.setText(mValues.get(position).getName());
+        holder.mContentView.setText(mValues.get(position).getNameA());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -10,13 +10,16 @@ public class LineBase extends RealmObject {
     
     @PrimaryKey
     private String code;
-    private String name;
+    private String nameA;
+    private String nameB;
     private String shortName;
     private RealmList<StopBase> stops;
     private int transportType;
 
-    public LineBase(String name, String shortName, String code, RealmList<StopBase> stops, int transportType) {
-        this.name = name;
+    public LineBase(String nameA, String nameB, String shortName, String code,
+                    RealmList<StopBase> stops, int transportType) {
+        this.nameA = nameA;
+        this.nameB = nameB;
         this.shortName = shortName;
         this.code = code;
         this.stops = stops;
@@ -25,18 +28,23 @@ public class LineBase extends RealmObject {
 
     public LineBase() {
         code = "";
-        name = "";
+        nameA = "";
+        nameB = "";
         shortName = "";
         stops = new RealmList<>();
         transportType = TransportType.BUS;
     }
 
-    public String getName() {
-        return name;
+    public String getNameA() {
+        return nameA;
     }
 
     public String getShortName() {
         return shortName;
+    }
+
+    public String getNameB() {
+        return nameB;
     }
 
     public String getCode() {
