@@ -20,7 +20,14 @@ public interface EmtRestApi {
      */
     @FormUrlEncoded
     @POST("/emt-proxy-server/last/bus/GetListLines.php")
-    Observable<ListLineInfoEmt> getListLines(@Field("idClient") String idClient, @Field("passKey") String passKey, @Field("SelectDate") String SelectDate);
+    Observable<ListLineInfoEmt> getListLines(@Field("idClient") String idClient, @Field("passKey") String passKey,
+                                             @Field("SelectDate") String SelectDate);
+
+
+    @FormUrlEncoded
+    @POST("/emt-proxy-server/last/bus/GetRouteLines.php")
+    Observable<ListLineInfoEmt> getLineRoute(@Field("idClient") String idClient, @Field("passKey")
+            String passKey, @Field("SelectDate") String SelectDate, @Field("Lines") String Lines);
 
 }
 
