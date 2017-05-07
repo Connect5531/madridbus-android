@@ -7,16 +7,16 @@ public class StopBase extends RealmObject {
     private String name;
     private String code;
     private int transportType;
-    Double latitude;
-    Double longitude;
-    int distance;
-    int distancePrevious;
-    int order;
-    int line;
+    private Double latitude;
+    private Double longitude;
+    private int distance;
+    private int distancePrevious;
+    private int order;
+    private String line;
 
 
     public StopBase(String name, String code, int transportType, Double latitude, Double longitude,
-                    int distance, int distancePrevious, int order, int line) {
+                    int distance, int distancePrevious, int order, String line) {
         this.name = name;
         this.code = code;
         this.transportType = transportType;
@@ -37,7 +37,7 @@ public class StopBase extends RealmObject {
         this.distance = 0;
         this.distancePrevious = 0;
         this.order = 0;
-        this.line = 0;
+        this.line = "";
     }
 
     public Double getLatitude() {
@@ -60,7 +60,7 @@ public class StopBase extends RealmObject {
         return order;
     }
 
-    public int getLine() {
+    public String getLine() {
         return line;
     }
 

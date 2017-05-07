@@ -19,7 +19,7 @@ public class RouteRepositoryMapper {
         if(emtInfoList != null && emtInfoList.getResultValues() != null) {
             for (ResultValue resultValue : emtInfoList.getResultValues()) {
                 StopBase stop = new StopBaseBuilder()
-                        .setLine(resultValue.getLine())
+                        .setLine(resultValue.getLine().toString())
                         .setCode(resultValue.getNode().toString())
                         .setName(resultValue.getName())
                         .setLatitude(resultValue.getLatitude())

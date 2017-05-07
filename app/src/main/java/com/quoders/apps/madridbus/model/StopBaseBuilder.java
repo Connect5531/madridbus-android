@@ -11,7 +11,7 @@ public class StopBaseBuilder {
     private int distance = 0;
     private int distancePrevious = 0;
     private int order = 0;
-    private int line = 0;
+    private String line = "";
 
     public StopBaseBuilder setName(String name) {
         this.name = name;
@@ -53,7 +53,7 @@ public class StopBaseBuilder {
         return this;
     }
 
-    public StopBaseBuilder setLine(int line) {
+    public StopBaseBuilder setLine(String line) {
         this.line = line;
         return this;
     }
