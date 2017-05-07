@@ -3,6 +3,8 @@ package com.quoders.apps.madridbus.ui.home;
 import android.support.annotation.NonNull;
 
 import com.quoders.apps.madridbus.BaseView;
+import com.quoders.apps.madridbus.model.LineBase;
+import com.quoders.apps.madridbus.ui.model.LineUI;
 
 import javax.inject.Inject;
 
@@ -30,6 +32,11 @@ public class HomePresenter implements HomeContract.Presenter {
         mView.displayFavoritesView();
     }
 
+    @Override
+    public void onLineSelected(LineUI line) {
+        mView.displayLineRoute(line);
+    }
+
 
     @Override
     public void start() {
@@ -40,4 +47,5 @@ public class HomePresenter implements HomeContract.Presenter {
     public void stop() {
 
     }
+
 }

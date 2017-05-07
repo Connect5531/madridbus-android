@@ -3,15 +3,13 @@ package com.quoders.apps.madridbus.domain.repository.lines;
 
 import com.quoders.apps.madridbus.domain.repository.Cache;
 import com.quoders.apps.madridbus.model.LineBase;
-import com.quoders.apps.madridbus.model.rest.ListLineInfoEmt;
+import com.quoders.apps.madridbus.model.lines.ListLineInfoEmt;
 
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
 
 public class LinesRepositoryImpl implements LinesRepository {
@@ -31,7 +29,7 @@ public class LinesRepositoryImpl implements LinesRepository {
 
     @Override
     public Observable<Iterable<LineBase>> getLinesList() {
-        if (mCache.isDataOutdated()) {
+        if (mCache.isDataOutdated("")) {
             return getCloudLineListObservable();
         } else {
             return getLocalLineListObservable();
@@ -48,11 +46,16 @@ public class LinesRepositoryImpl implements LinesRepository {
             public Iterable<LineBase> apply(ListLineInfoEmt listLineInfoEmt) throws Exception {
                 List<LineBase> mapped = LinesRepositoryMapper.map(listLineInfoEmt);
                 if(mapped != null && !mapped.isEmpty()) {
-                    mCache.setCache();
+                    mCache.setCache("");
                     mLocalRepository.add(mapped);
                 }
                 return mapped;
             }
         });
+    }
+
+    @Override
+    public void releaseRepository() {
+        mLocalRepository.close();
     }
 }

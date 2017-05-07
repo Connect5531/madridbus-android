@@ -1,8 +1,9 @@
-package com.quoders.apps.madridbus.domain.repository.lines;
+package com.quoders.apps.madridbus.domain.repository.routes;
 
 import com.quoders.apps.madridbus.domain.repository.LocalRepository;
 import com.quoders.apps.madridbus.domain.repository.Repository;
 import com.quoders.apps.madridbus.model.LineBase;
+import com.quoders.apps.madridbus.model.StopBase;
 
 import java.util.concurrent.Callable;
 
@@ -14,47 +15,47 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 
 
-public class LinesLocalRepository implements LocalRepository<LineBase> {
+public class RouteLocalRepository implements LocalRepository<StopBase> {
 
     private final Realm mRealm;
 
     @Inject
-    public LinesLocalRepository(Realm mRealm) {
+    public RouteLocalRepository(Realm mRealm) {
         this.mRealm = mRealm;
     }
 
     @Override
-    public void add(final LineBase line) {
+    public void add(final StopBase stop) {
         mRealm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                mRealm.copyToRealmOrUpdate(line);
+                mRealm.copyToRealmOrUpdate(stop);
             }
         });
     }
 
     @Override
-    public void add(final Iterable<LineBase> lines) {
+    public void add(final Iterable<StopBase> stop) {
         mRealm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                mRealm.copyToRealmOrUpdate(lines);
+                mRealm.copyToRealmOrUpdate(stop);
             }
         });
     }
 
     @Override
-    public void update(final LineBase line) {
+    public void update(final StopBase stop) {
         mRealm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                mRealm.copyToRealmOrUpdate(line);
+                mRealm.copyToRealmOrUpdate(stop);
             }
         });
     }
 
     @Override
-    public void remove(LineBase item) {
+    public void remove(StopBase item) {
         final RealmResults<LineBase> items = mRealm.where(LineBase.class).equalTo(LineBase.CODE, item.getCode()).findAll();
         mRealm.executeTransaction(new Realm.Transaction() {
             @Override
@@ -62,25 +63,34 @@ public class LinesLocalRepository implements LocalRepository<LineBase> {
                 items.deleteAllFromRealm();
             }
         });
-
-        mRealm.close();
     }
 
 
     @Override
-    public Observable<LineBase> query() {
+    public Observable<StopBase> query() {
         return Observable.empty();
     }
 
     @Override
-    public Observable<Iterable<LineBase>> queryItems() {
-        return Observable.fromCallable(new Callable<Iterable<LineBase>>() {
+    public Observable<Iterable<StopBase>> queryItems() {
+        return Observable.fromCallable(new Callable<Iterable<StopBase>>() {
             @Override
-            public Iterable<LineBase> call() throws Exception {
-                return mRealm.where(LineBase.class).findAll();
+            public Iterable<StopBase> call() throws Exception {
+                return mRealm.where(StopBase.class).findAll();
             }
         }).subscribeOn(AndroidSchedulers.mainThread());
     }
+
+    public Observable<Iterable<StopBase>> queryItems(final String code) {
+        return Observable.fromCallable(new Callable<Iterable<StopBase>>() {
+            @Override
+            public Iterable<StopBase> call() throws Exception {
+                String codeInt = Integer.valueOf(code).toString();
+                return mRealm.where(StopBase.class).equalTo("line", codeInt).findAll();
+            }
+        }).subscribeOn(AndroidSchedulers.mainThread());
+    }
+
 
     @Override
     public void close() {

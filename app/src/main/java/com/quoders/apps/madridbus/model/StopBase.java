@@ -1,6 +1,5 @@
 package com.quoders.apps.madridbus.model;
 
-import io.realm.RealmList;
 import io.realm.RealmObject;
 
 public class StopBase extends RealmObject {
@@ -8,20 +7,61 @@ public class StopBase extends RealmObject {
     private String name;
     private String code;
     private int transportType;
-    private RealmList<LineBase> lines;
+    Double latitude;
+    Double longitude;
+    int distance;
+    int distancePrevious;
+    int order;
+    int line;
+
+
+    public StopBase(String name, String code, int transportType, Double latitude, Double longitude,
+                    int distance, int distancePrevious, int order, int line) {
+        this.name = name;
+        this.code = code;
+        this.transportType = transportType;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.distance = distance;
+        this.distancePrevious = distancePrevious;
+        this.order = order;
+        this.line = line;
+    }
 
     public StopBase() {
         this.name = "";
         this.code = "";
         this.transportType = TransportType.BUS;
-        this.lines = new RealmList<>();
+        this.latitude = 0d;
+        this.longitude = 0d;
+        this.distance = 0;
+        this.distancePrevious = 0;
+        this.order = 0;
+        this.line = 0;
     }
 
-    public StopBase(String name, String code, int transportType, RealmList<LineBase> lines) {
-        this.name = name;
-        this.code = code;
-        this.transportType = transportType;
-        this.lines = lines;
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public int getDistance() {
+        return distance;
+    }
+
+    public int getDistancePrevious() {
+        return distancePrevious;
+    }
+
+    public int getOrder() {
+        return order;
+    }
+
+    public int getLine() {
+        return line;
     }
 
     public String getName() {
@@ -34,9 +74,5 @@ public class StopBase extends RealmObject {
 
     public int getTransportType() {
         return transportType;
-    }
-
-    public RealmList<LineBase> getLines() {
-        return lines;
     }
 }

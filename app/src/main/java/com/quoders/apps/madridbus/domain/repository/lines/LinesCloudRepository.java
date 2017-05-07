@@ -1,9 +1,10 @@
 package com.quoders.apps.madridbus.domain.repository.lines;
 
 import com.quoders.apps.madridbus.domain.network.EmtRestApi;
+import com.quoders.apps.madridbus.domain.repository.CloudRepository;
 import com.quoders.apps.madridbus.domain.repository.Repository;
 import com.quoders.apps.madridbus.domain.utils.DateUtils;
-import com.quoders.apps.madridbus.model.rest.ListLineInfoEmt;
+import com.quoders.apps.madridbus.model.lines.ListLineInfoEmt;
 
 import javax.inject.Inject;
 
@@ -12,7 +13,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 
-public class LinesCloudRepository implements Repository<ListLineInfoEmt> {
+public class LinesCloudRepository implements CloudRepository<ListLineInfoEmt> {
 
     private EmtRestApi mEmtRestApi;
 
@@ -21,21 +22,6 @@ public class LinesCloudRepository implements Repository<ListLineInfoEmt> {
         mEmtRestApi = emtRestApi;
     }
 
-    @Override
-    public void add(Iterable items) {
-    }
-
-    @Override
-    public void add(ListLineInfoEmt item) {
-    }
-
-    @Override
-    public void update(ListLineInfoEmt item) {
-    }
-
-    @Override
-    public void remove(ListLineInfoEmt item) {
-    }
 
     @Override
     public Observable<ListLineInfoEmt> query() {
@@ -44,10 +30,5 @@ public class LinesCloudRepository implements Repository<ListLineInfoEmt> {
                 .onErrorReturnItem(new ListLineInfoEmt())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread());
-    }
-
-    @Override
-    public Observable<Iterable<ListLineInfoEmt>> queryItems() {
-        return null;
     }
 }

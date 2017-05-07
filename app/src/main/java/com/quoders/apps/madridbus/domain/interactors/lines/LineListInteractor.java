@@ -18,6 +18,11 @@ public class LineListInteractor extends BaseInteractor {
     }
 
     @Override
+    public void finalize() {
+        this.mLinesRepository.releaseRepository();
+    }
+
+    @Override
     protected Observable<Iterable<LineBase>> buildInteractorObservable() {
         return mLinesRepository.getLinesList();
     }

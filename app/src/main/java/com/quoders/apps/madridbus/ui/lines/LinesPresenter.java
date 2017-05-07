@@ -3,6 +3,7 @@ package com.quoders.apps.madridbus.ui.lines;
 import com.quoders.apps.madridbus.domain.interactors.lines.LineListInteractor;
 import com.quoders.apps.madridbus.domain.repository.lines.LinesRepositoryMapper;
 import com.quoders.apps.madridbus.model.LineBase;
+import com.quoders.apps.madridbus.ui.model.LineUI;
 
 import javax.inject.Inject;
 
@@ -36,7 +37,7 @@ public class LinesPresenter implements LinesContract.Presenter {
             @Override
             public void onNext(Iterable<LineBase> lineList) {
                 if(lineList != null && lineList.iterator().hasNext()) {
-                    mView.setLinesList(LinesRepositoryMapper.toList(lineList));
+                    mView.setLinesList(LinesRepositoryMapper.toUIList(lineList));
                 } else {
                     mView.dismissProgressBar();
                     mView.showErrorLoadingList();
@@ -59,5 +60,6 @@ public class LinesPresenter implements LinesContract.Presenter {
     @Override
     public void stop() {
         mDisposables.clear();
+        mLinesListInteractor.finalize();
     }
 }

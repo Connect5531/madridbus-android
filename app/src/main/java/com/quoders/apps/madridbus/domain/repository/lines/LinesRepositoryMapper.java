@@ -1,17 +1,15 @@
 package com.quoders.apps.madridbus.domain.repository.lines;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.quoders.apps.madridbus.model.LineBase;
 import com.quoders.apps.madridbus.model.TransportType;
-import com.quoders.apps.madridbus.model.rest.LineInfoEmt;
-import com.quoders.apps.madridbus.model.rest.ListLineInfoEmt;
+import com.quoders.apps.madridbus.model.lines.LineInfoEmt;
+import com.quoders.apps.madridbus.model.lines.ListLineInfoEmt;
+import com.quoders.apps.madridbus.ui.model.LineUI;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import io.reactivex.Observable;
 
 public class LinesRepositoryMapper {
 
@@ -32,10 +30,10 @@ public class LinesRepositoryMapper {
         return string.replaceAll("\\s+$", "");
     }
 
-    public static List<LineBase> toList(@NonNull Iterable<LineBase> lineList) {
-        List<LineBase> lines = new ArrayList<>();
+    public static List<LineUI> toUIList(@NonNull Iterable<LineBase> lineList) {
+        List<LineUI> lines = new ArrayList<>();
         for (LineBase line : lineList) {
-            lines.add(line);
+            lines.add(new LineUI(line.getCode(), line.getNameA(), line.getNameB(), line.getShortName(), line.getTransportType()));
         }
         return lines;
     }

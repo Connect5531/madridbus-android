@@ -16,6 +16,7 @@ import com.quoders.apps.madridbus.MadridBusApplication;
 import com.quoders.apps.madridbus.R;
 import com.quoders.apps.madridbus.domain.repository.lines.LinesRepositoryModule;
 import com.quoders.apps.madridbus.model.LineBase;
+import com.quoders.apps.madridbus.ui.model.LineUI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +69,7 @@ public class LinesFragment extends BaseFragment implements LinesContract.View {
     private void initLinesListRecyclerView(View view) {
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        mAdapter = new LinesRecyclerViewAdapter(new ArrayList<LineBase>(), mListener);
+        mAdapter = new LinesRecyclerViewAdapter(new ArrayList<LineUI>(), mListener);
         recyclerView.setAdapter(mAdapter);
     }
 
@@ -101,7 +102,7 @@ public class LinesFragment extends BaseFragment implements LinesContract.View {
     }
 
     @Override
-    public void setLinesList(List<LineBase> resultValues) {
+    public void setLinesList(List<LineUI> resultValues) {
         mAdapter.setItems(resultValues);
         mAdapter.notifyDataSetChanged();
     }
@@ -123,6 +124,6 @@ public class LinesFragment extends BaseFragment implements LinesContract.View {
 
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(LineBase item);
+        void onListFragmentInteraction(LineUI item);
     }
 }

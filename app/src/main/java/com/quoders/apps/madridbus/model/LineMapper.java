@@ -1,7 +1,7 @@
 package com.quoders.apps.madridbus.model;
 
-import com.quoders.apps.madridbus.model.rest.LineInfoEmt;
-import com.quoders.apps.madridbus.model.rest.ListLineInfoEmt;
+import com.quoders.apps.madridbus.model.lines.LineInfoEmt;
+import com.quoders.apps.madridbus.model.lines.ListLineInfoEmt;
 
 import java.util.ArrayList;
 import java.util.List;

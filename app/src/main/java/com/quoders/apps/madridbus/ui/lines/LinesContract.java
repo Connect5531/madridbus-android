@@ -2,12 +2,9 @@ package com.quoders.apps.madridbus.ui.lines;
 
 import com.quoders.apps.madridbus.BasePresenter;
 import com.quoders.apps.madridbus.BaseView;
-import com.quoders.apps.madridbus.model.LineBase;
-import com.quoders.apps.madridbus.model.rest.LineInfoEmt;
+import com.quoders.apps.madridbus.ui.model.LineUI;
 
 import java.util.List;
-
-import io.reactivex.Single;
 
 public class LinesContract {
 
@@ -15,7 +12,7 @@ public class LinesContract {
 
         void showProgressBar();
 
-        void setLinesList(List<LineBase> resultValues);
+        void setLinesList(List<LineUI> resultValues);
 
         void showErrorLoadingList();
 

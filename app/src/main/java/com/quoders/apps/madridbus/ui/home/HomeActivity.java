@@ -1,5 +1,6 @@
 package com.quoders.apps.madridbus.ui.home;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,18 +9,16 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.quoders.apps.madridbus.BaseActivity;
-import com.quoders.apps.madridbus.MadridBusApplication;
 import com.quoders.apps.madridbus.R;
-import com.quoders.apps.madridbus.model.LineBase;
-import com.quoders.apps.madridbus.model.rest.LineInfoEmt;
 import com.quoders.apps.madridbus.ui.lines.LinesFragment;
 import com.quoders.apps.madridbus.ui.map.HomeMapFragment;
+import com.quoders.apps.madridbus.ui.model.LineUI;
+import com.quoders.apps.madridbus.ui.routes.LineRouteActivity;
 
 import javax.inject.Inject;
 
@@ -111,6 +110,13 @@ public class HomeActivity extends BaseActivity implements
     }
 
     @Override
+    public void displayLineRoute(LineUI line) {
+        Intent intent = new Intent(this, LineRouteActivity.class);
+        intent.putExtra(LineRouteActivity.INTENT_EXTRA_LINE, line);
+        startActivity(intent);
+    }
+
+    @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -161,8 +167,8 @@ public class HomeActivity extends BaseActivity implements
     }
 
     @Override
-    public void onListFragmentInteraction(LineBase item) {
-
+    public void onListFragmentInteraction(LineUI item) {
+        mPresenter.onLineSelected(item);
     }
 
     @Override

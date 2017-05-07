@@ -1,6 +1,7 @@
 package com.quoders.apps.madridbus.domain.network;
 
-import com.quoders.apps.madridbus.model.rest.ListLineInfoEmt;
+import com.quoders.apps.madridbus.model.lines.ListLineInfoEmt;
+import com.quoders.apps.madridbus.model.routes.RouteInfoEmt;
 
 import io.reactivex.Observable;
 import retrofit2.http.Field;
@@ -26,7 +27,7 @@ public interface EmtRestApi {
 
     @FormUrlEncoded
     @POST("/emt-proxy-server/last/bus/GetRouteLines.php")
-    Observable<ListLineInfoEmt> getLineRoute(@Field("idClient") String idClient, @Field("passKey")
+    Observable<RouteInfoEmt> getLineRoute(@Field("idClient") String idClient, @Field("passKey")
             String passKey, @Field("SelectDate") String SelectDate, @Field("Lines") String Lines);
 
 }

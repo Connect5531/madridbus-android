@@ -1,5 +1,5 @@
 
-package com.quoders.apps.madridbus.model.rest;
+package com.quoders.apps.madridbus.model.lines;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

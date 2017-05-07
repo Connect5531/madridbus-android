@@ -8,15 +8,16 @@ import android.widget.TextView;
 
 import com.quoders.apps.madridbus.R;
 import com.quoders.apps.madridbus.model.LineBase;
+import com.quoders.apps.madridbus.ui.model.LineUI;
 
 import java.util.List;
 
 public class LinesRecyclerViewAdapter extends RecyclerView.Adapter<LinesRecyclerViewAdapter.ViewHolder> {
 
-    private List<LineBase> mValues;
+    private List<LineUI> mValues;
     private final LinesFragment.OnListFragmentInteractionListener mListener;
 
-    public LinesRecyclerViewAdapter(List<LineBase> items, LinesFragment.OnListFragmentInteractionListener listener) {
+    public LinesRecyclerViewAdapter(List<LineUI> items, LinesFragment.OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -45,9 +46,8 @@ public class LinesRecyclerViewAdapter extends RecyclerView.Adapter<LinesRecycler
         });
     }
 
-    public void setItems(List<LineBase> resultValues) {
+    void setItems(List<LineUI> resultValues) {
         mValues = resultValues;
-
     }
 
     @Override
@@ -55,13 +55,13 @@ public class LinesRecyclerViewAdapter extends RecyclerView.Adapter<LinesRecycler
         return mValues.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
-        public LineBase mItem;
+    class ViewHolder extends RecyclerView.ViewHolder {
+        final View mView;
+        final TextView mIdView;
+        final TextView mContentView;
+        LineUI mItem;
 
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             super(view);
             mView = view;
             mIdView = (TextView) view.findViewById(R.id.id);
