@@ -1,22 +1,14 @@
-package com.quoders.apps.madridbus.ui.routes;
+package com.quoders.apps.madridbus.ui.routes.list;
 
 import com.quoders.apps.madridbus.BasePresenter;
 import com.quoders.apps.madridbus.BaseView;
-import com.quoders.apps.madridbus.model.LineBase;
 import com.quoders.apps.madridbus.model.StopBase;
 
 import java.util.List;
 
-public interface LineRouteContract {
+public interface RouteListViewContract {
 
-    interface View extends BaseView {
-
-        void showProgressBar();
-
-        void dismissProgressBar();
-
-        void showErrorLoadingList();
-
+    interface View extends BaseView<Presenter> {
         void displayRoute(List<StopBase> stops);
     }
 

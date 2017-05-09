@@ -18,7 +18,7 @@ public class LineListInteractor extends BaseInteractor {
     }
 
     @Override
-    public void finalize() {
+    public void release() {
         this.mLinesRepository.releaseRepository();
     }
 

@@ -114,7 +114,6 @@ public class LinesFragment extends BaseFragment implements LinesContract.View {
                 .setMessage(R.string.error_dialog_line_list_message)
                 .setNeutralButton(R.string.dialog_button_neutral, null)
                 .show();
-
     }
 
     @Override

@@ -6,19 +6,21 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.ContentLoadingProgressBar;
+import android.support.v7.app.AlertDialog;
+import android.view.View;
 
 import com.quoders.apps.madridbus.BaseActivity;
 import com.quoders.apps.madridbus.R;
 import com.quoders.apps.madridbus.domain.repository.routes.RoutesRepositoryModule;
+import com.quoders.apps.madridbus.model.StopBase;
 import com.quoders.apps.madridbus.ui.model.LineUI;
-import com.quoders.apps.madridbus.ui.routes.dummy.DummyContent;
 import com.quoders.apps.madridbus.ui.routes.list.RouteListFragment;
 import com.quoders.apps.madridbus.ui.routes.map.RouteMapFragment;
 
-import javax.inject.Inject;
+import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import javax.inject.Inject;
 
 public class LineRouteActivity extends BaseActivity implements LineRouteContract.View,
         RouteListFragment.OnListFragmentInteractionListener,
@@ -31,10 +33,9 @@ public class LineRouteActivity extends BaseActivity implements LineRouteContract
 
     private RouteSectionsPagerAdapter mRouteSectionsPagerAdapter;
 
-    @BindView(R.id.tabLayoutRoute)
     TabLayout mTabLayoutRoute;
-    @BindView(R.id.viewPagerRoute)
     ViewPager mViewPagerRoute;
+    ContentLoadingProgressBar mProgressBar;
 
     @Inject
     LineRoutePresenter mPresenter;
@@ -43,8 +44,6 @@ public class LineRouteActivity extends BaseActivity implements LineRouteContract
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_line_route);
-
-        ButterKnife.bind(this);
 
         LineUI line = (LineUI) getIntent().getSerializableExtra(INTENT_EXTRA_LINE);
 
@@ -56,6 +55,11 @@ public class LineRouteActivity extends BaseActivity implements LineRouteContract
 
         initTabsView();
         initFragments();
+        initProgressBar();
+    }
+
+    private void initProgressBar() {
+        mProgressBar = (ContentLoadingProgressBar) findViewById(R.id.progressBarRouteList);
     }
 
     private void initFragments() {
@@ -64,6 +68,9 @@ public class LineRouteActivity extends BaseActivity implements LineRouteContract
     }
 
     private void initTabsView() {
+        mTabLayoutRoute = (TabLayout) findViewById(R.id.tabLayoutRoute);
+        mViewPagerRoute = (ViewPager) findViewById(R.id.viewPagerRoute);
+
         mRouteSectionsPagerAdapter = new RouteSectionsPagerAdapter(getSupportFragmentManager());
         mViewPagerRoute.setAdapter(mRouteSectionsPagerAdapter);
         mTabLayoutRoute.setupWithViewPager(mViewPagerRoute);
@@ -77,26 +84,35 @@ public class LineRouteActivity extends BaseActivity implements LineRouteContract
 
     @Override
     public void setPresenter(Object presenter) {
-
     }
 
     @Override
     public void showProgressBar() {
-
+        mProgressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void dismissProgressBar() {
-
+        mProgressBar.setVisibility(View.GONE);
     }
 
     @Override
     public void showErrorLoadingList() {
-
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.error_dialog_generic_title)
+                .setMessage(R.string.error_dialog_line_list_message)
+                .setNeutralButton(R.string.dialog_button_neutral, null)
+                .show();
     }
 
     @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem item) {
+    public void displayRoute(List<StopBase> stops) {
+        mListFragment.displayRoute(stops);
+        //mMapFragment.displayRoute(stops);
+    }
+
+    @Override
+    public void onListFragmentInteraction(StopBase item) {
 
     }
 

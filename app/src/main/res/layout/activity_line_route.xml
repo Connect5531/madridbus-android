@@ -7,36 +7,47 @@
     android:layout_height="match_parent"
     tools:context="com.quoders.apps.madridbus.ui.routes.LineRouteActivity">
 
+    <android.support.v4.widget.ContentLoadingProgressBar
+        android:id="@+id/progressBarRouteList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Base.Widget.AppCompat.ProgressBar"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <android.support.v4.view.ViewPager
         android:id="@+id/viewPagerRoute"
-        android:layout_width="368dp"
-        android:layout_height="wrap_content"
-        tools:layout_constraintTop_creator="1"
-        tools:layout_constraintLeft_creator="1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tabLayoutRoute"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent" >
+         <android.support.design.widget.TabLayout
+             android:id="@+id/tabLayoutRoute"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content">
 
-            <android.support.design.widget.TabItem
-                android:id="@+id/tabItemRouteList"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tab_item_route"
-                tools:text="Route" />
+             <android.support.design.widget.TabItem
+                 android:id="@+id/tabItemRouteList"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:text="@string/tab_item_route"
+                 tools:text="Route" />
 
-            <android.support.design.widget.TabItem
-                android:id="@+id/tabItemRouteMap"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/tab_item_map"
-                tools:text="Map" />
+             <android.support.design.widget.TabItem
+                 android:id="@+id/tabItemRouteMap"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:text="@string/tab_item_map"
+                 tools:text="Map" />
 
-        </android.support.design.widget.TabLayout>
+         </android.support.design.widget.TabLayout>
 
-    </android.support.v4.view.ViewPager>
+     </android.support.v4.view.ViewPager>
 
 </android.support.constraint.ConstraintLayout>

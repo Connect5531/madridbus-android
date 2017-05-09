@@ -7,32 +7,32 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.quoders.apps.madridbus.R;
+import com.quoders.apps.madridbus.model.StopBase;
 import com.quoders.apps.madridbus.ui.routes.dummy.DummyContent.DummyItem;
 
 import java.util.List;
 
 public class RouteListRecyclerViewAdapter extends RecyclerView.Adapter<RouteListRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
+    private List<StopBase> mValues;
     private final RouteListFragment.OnListFragmentInteractionListener mListener;
 
-    public RouteListRecyclerViewAdapter(List<DummyItem> items, RouteListFragment.OnListFragmentInteractionListener listener) {
+    public RouteListRecyclerViewAdapter(List<StopBase> items, RouteListFragment.OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_routestop, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_routestop, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+        holder.mCode.setText(mValues.get(position).getCode());
+        holder.mName.setText(mValues.get(position).getName());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,22 +51,26 @@ public class RouteListRecyclerViewAdapter extends RecyclerView.Adapter<RouteList
         return mValues.size();
     }
 
+    public void setItems(List<StopBase> stops) {
+        mValues = stops;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
-        public DummyItem mItem;
+        public final TextView mCode;
+        public final TextView mName;
+        public StopBase mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.id);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            mCode = (TextView) view.findViewById(R.id.stopCode);
+            mName = (TextView) view.findViewById(R.id.stopName);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + mName.getText() + "'";
         }
     }
 }

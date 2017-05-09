@@ -6,9 +6,13 @@ import com.quoders.apps.madridbus.domain.repository.routes.RouteRepository;
 import com.quoders.apps.madridbus.model.LineBase;
 import com.quoders.apps.madridbus.model.StopBase;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
+import io.reactivex.functions.Function;
 
 public class RouteInteractor extends BaseInteractor {
 
@@ -22,12 +26,22 @@ public class RouteInteractor extends BaseInteractor {
     }
 
     @Override
-    public void finalize() {
+    public void release() {
         this.mRouteRepository.releaseRepository();
     }
 
     @Override
-    protected Observable<Iterable<StopBase>> buildInteractorObservable() {
-        return mRouteRepository.getRoute(mCode);
+    protected Observable<List<StopBase>> buildInteractorObservable() {
+        return mRouteRepository.getRoute(mCode)
+                .map(new Function<Iterable<StopBase>, List<StopBase>>() {
+                    @Override
+                    public List<StopBase> apply(Iterable<StopBase> stopBases) throws Exception {
+                        List<StopBase> stops = new ArrayList<>();
+                        for (StopBase stop : stopBases) {
+                            stops.add(stop);
+                        }
+                        return stops;
+                    }
+                });
     }
 }

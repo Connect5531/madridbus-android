@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import io.reactivex.Observer;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.observers.DisposableObserver;
 
 public class LinesPresenter implements LinesContract.Presenter {
 
@@ -28,12 +29,7 @@ public class LinesPresenter implements LinesContract.Presenter {
 
         mView.showProgressBar();
 
-        mLinesListInteractor.execute(new Observer<Iterable<LineBase>>() {
-
-            @Override
-            public void onSubscribe(Disposable d) {
-            }
-
+        DisposableObserver<Iterable<LineBase>> observer = new DisposableObserver<Iterable<LineBase>>() {
             @Override
             public void onNext(Iterable<LineBase> lineList) {
                 if(lineList != null && lineList.iterator().hasNext()) {
@@ -54,12 +50,16 @@ public class LinesPresenter implements LinesContract.Presenter {
             public void onComplete() {
                 mView.dismissProgressBar();
             }
-        });
+        };
+
+        mDisposables.add(observer);
+
+        mLinesListInteractor.execute(observer);
     }
 
     @Override
     public void stop() {
         mDisposables.clear();
-        mLinesListInteractor.finalize();
+        mLinesListInteractor.release();
     }
 }

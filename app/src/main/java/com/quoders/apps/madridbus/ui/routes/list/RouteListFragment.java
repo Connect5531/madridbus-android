@@ -3,7 +3,6 @@ package com.quoders.apps.madridbus.ui.routes.list;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,16 +10,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.quoders.apps.madridbus.R;
-import com.quoders.apps.madridbus.ui.routes.dummy.DummyContent;
-import com.quoders.apps.madridbus.ui.routes.dummy.DummyContent.DummyItem;
+import com.quoders.apps.madridbus.model.StopBase;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
-public class RouteListFragment extends Fragment {
+public class RouteListFragment extends Fragment implements RouteListViewContract.View {
 
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
+
+    private RouteListRecyclerViewAdapter mAdapter;
     private OnListFragmentInteractionListener mListener;
 
     /**
@@ -30,8 +30,6 @@ public class RouteListFragment extends Fragment {
     public RouteListFragment() {
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
     public static RouteListFragment newInstance(int columnCount) {
         RouteListFragment fragment = new RouteListFragment();
         Bundle args = new Bundle();
@@ -45,25 +43,21 @@ public class RouteListFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+            //mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
+
+        mAdapter = new RouteListRecyclerViewAdapter(new ArrayList<StopBase>(), mListener);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_route_list, container, false);
 
-        // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            recyclerView.setAdapter(new RouteListRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            recyclerView.setAdapter(mAdapter);
         }
         return view;
     }
@@ -86,18 +80,19 @@ public class RouteListFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+    @Override
+    public void setPresenter(RouteListViewContract.Presenter presenter) {
+
+    }
+
+    @Override
+    public void displayRoute(List<StopBase> stops) {
+        mAdapter.setItems(stops);
+        mAdapter.notifyDataSetChanged();
+    }
+
+
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(StopBase item);
     }
 }

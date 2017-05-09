@@ -10,12 +10,12 @@
     <string name="navItemFavorites">Favoritos</string>
     <string name="error_dialog_generic_title">Error</string>
     <string name="error_dialog_line_list_message">Error loading list of lines. Please try again later.</string>
+    <string name="error_dialog_route_list_message">Error loading route. Please try again later.</string>
+
     <string name="dialog_button_neutral">OK</string>
     <string name="tab_item_route">Route</string>
     <string name="tab_item_map">Map</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>
