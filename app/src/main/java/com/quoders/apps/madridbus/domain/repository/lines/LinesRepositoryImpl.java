@@ -41,16 +41,13 @@ public class LinesRepositoryImpl implements LinesRepository {
     }
 
     private Observable<Iterable<LineBase>> getCloudLineListObservable() {
-        return mCloudRepository.query().map(new Function<ListLineInfoEmt, Iterable<LineBase>>() {
-            @Override
-            public Iterable<LineBase> apply(ListLineInfoEmt listLineInfoEmt) throws Exception {
-                List<LineBase> mapped = LinesRepositoryMapper.map(listLineInfoEmt);
-                if(mapped != null && !mapped.isEmpty()) {
-                    mCache.setCache("");
-                    mLocalRepository.add(mapped);
-                }
-                return mapped;
+        return mCloudRepository.query().map(listLineInfoEmt -> {
+            List<LineBase> mapped = LinesRepositoryMapper.map(listLineInfoEmt);
+            if(mapped != null && !mapped.isEmpty()) {
+                mCache.setCache("");
+                mLocalRepository.add(mapped);
             }
+            return mapped;
         });
     }
 

@@ -25,45 +25,25 @@ public class LinesLocalRepository implements LocalRepository<LineBase> {
 
     @Override
     public void add(final LineBase line) {
-        mRealm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                mRealm.copyToRealmOrUpdate(line);
-            }
-        });
+        mRealm.executeTransaction(realm -> mRealm.copyToRealmOrUpdate(line));
     }
 
     @Override
     public void add(final Iterable<LineBase> lines) {
-        mRealm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                mRealm.copyToRealmOrUpdate(lines);
-            }
-        });
+        mRealm.executeTransaction(realm -> mRealm.copyToRealmOrUpdate(lines));
     }
 
     @Override
     public void update(final LineBase line) {
-        mRealm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                mRealm.copyToRealmOrUpdate(line);
-            }
-        });
+        mRealm.executeTransaction(realm -> mRealm.copyToRealmOrUpdate(line));
     }
 
     @Override
     public void remove(LineBase item) {
-        final RealmResults<LineBase> items = mRealm.where(LineBase.class).equalTo(LineBase.CODE, item.getCode()).findAll();
-        mRealm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                items.deleteAllFromRealm();
-            }
-        });
+        final RealmResults<LineBase> items = mRealm.where(LineBase.class)
+                .equalTo(LineBase.CODE, item.getCode()).findAll();
 
-        mRealm.close();
+        mRealm.executeTransaction(realm -> items.deleteAllFromRealm());
     }
 
 
@@ -74,12 +54,9 @@ public class LinesLocalRepository implements LocalRepository<LineBase> {
 
     @Override
     public Observable<Iterable<LineBase>> queryItems() {
-        return Observable.fromCallable(new Callable<Iterable<LineBase>>() {
-            @Override
-            public Iterable<LineBase> call() throws Exception {
-                return mRealm.where(LineBase.class).findAll();
-            }
-        }).subscribeOn(AndroidSchedulers.mainThread());
+        return Observable.fromCallable((Callable<Iterable<LineBase>>) () ->
+                mRealm.where(LineBase.class).findAll()).
+                subscribeOn(AndroidSchedulers.mainThread());
     }
 
     @Override

@@ -15,6 +15,8 @@ import android.view.MenuItem;
 
 import com.quoders.apps.madridbus.BaseActivity;
 import com.quoders.apps.madridbus.R;
+import com.quoders.apps.madridbus.ui.favorites.FavoritesFragment;
+import com.quoders.apps.madridbus.ui.favorites.dummy.DummyContent;
 import com.quoders.apps.madridbus.ui.lines.LinesFragment;
 import com.quoders.apps.madridbus.ui.map.HomeMapFragment;
 import com.quoders.apps.madridbus.ui.model.LineUI;
@@ -26,7 +28,8 @@ public class HomeActivity extends BaseActivity implements
         HomeContract.View,
         NavigationView.OnNavigationItemSelectedListener,
         HomeMapFragment.OnFragmentInteractionListener,
-        LinesFragment.OnListFragmentInteractionListener {
+        LinesFragment.OnListFragmentInteractionListener,
+        FavoritesFragment.OnListFragmentInteractionListener {
 
     @Inject
     HomePresenter mPresenter;
@@ -106,6 +109,11 @@ public class HomeActivity extends BaseActivity implements
 
     @Override
     public void displayFavoritesView() {
+        FavoritesFragment favoritesFragment = (FavoritesFragment) getSupportFragmentManager().findFragmentByTag(FavoritesFragment.FRAGMENT_TAG);
+        if(favoritesFragment == null) {
+            favoritesFragment = FavoritesFragment.newInstance(1);
+        }
+        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayoutHomeContainer, favoritesFragment).commit();
 
     }
 
@@ -173,6 +181,11 @@ public class HomeActivity extends BaseActivity implements
 
     @Override
     public void setPresenter(Object presenter) {
+
+    }
+
+    @Override
+    public void onListFragmentInteraction(DummyContent.DummyItem item) {
 
     }
 }
