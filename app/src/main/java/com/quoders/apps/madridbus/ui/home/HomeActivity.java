@@ -15,8 +15,8 @@ import android.view.MenuItem;
 
 import com.quoders.apps.madridbus.BaseActivity;
 import com.quoders.apps.madridbus.R;
+import com.quoders.apps.madridbus.model.favorites.FavoriteBase;
 import com.quoders.apps.madridbus.ui.favorites.FavoritesFragment;
-import com.quoders.apps.madridbus.ui.favorites.dummy.DummyContent;
 import com.quoders.apps.madridbus.ui.lines.LinesFragment;
 import com.quoders.apps.madridbus.ui.map.HomeMapFragment;
 import com.quoders.apps.madridbus.ui.model.LineUI;
@@ -185,7 +185,7 @@ public class HomeActivity extends BaseActivity implements
     }
 
     @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem item) {
+    public void onListFragmentInteraction(FavoriteBase item) {
 
     }
 }

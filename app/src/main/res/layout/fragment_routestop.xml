@@ -1,20 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
         android:id="@+id/stopCode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
-        android:textAppearance="?attr/textAppearanceListItem" />
+        android:textAppearance="?attr/textAppearanceListItem"
+        app:layout_constraintRight_toLeftOf="@+id/stopName"
+        app:layout_constraintLeft_toLeftOf="parent"
+        tools:text="1234"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <TextView
         android:id="@+id/stopName"
-        android:layout_width="wrap_content"
+        android:layout_width="268dp"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/text_margin"
-        android:textAppearance="?attr/textAppearanceListItem" />
-</LinearLayout>
+        android:textAppearance="?attr/textAppearanceListItem"
+        app:layout_constraintRight_toLeftOf="@+id/imageViewStopFavorite"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="Parada Numero 1"
+        app:layout_constraintTop_toTopOf="@+id/stopCode"
+        app:layout_constraintBottom_toBottomOf="@+id/stopCode"
+        app:layout_constraintStart_toEndOf="@+id/stopCode" />
+
+    <ImageView
+        android:id="@+id/imageViewStopFavorite"
+        android:layout_margin="@dimen/text_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_favorite_border_black_24dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintTop_toTopOf="@+id/stopName"
+        app:layout_constraintBottom_toBottomOf="@+id/stopName"
+        app:layout_constraintStart_toEndOf="@+id/stopName" />
+
+</android.support.constraint.ConstraintLayout>

@@ -69,7 +69,7 @@ public class LinesFragment extends BaseFragment implements LinesContract.View {
     private void initLinesListRecyclerView(View view) {
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        mAdapter = new LinesRecyclerViewAdapter(new ArrayList<LineUI>(), mListener);
+        mAdapter = new LinesRecyclerViewAdapter(new ArrayList<>(), mListener);
         recyclerView.setAdapter(mAdapter);
     }
 

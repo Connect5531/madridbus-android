@@ -7,33 +7,33 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.quoders.apps.madridbus.R;
+import com.quoders.apps.madridbus.model.favorites.FavoriteBase;
 import com.quoders.apps.madridbus.ui.favorites.FavoritesFragment.OnListFragmentInteractionListener;
-import com.quoders.apps.madridbus.ui.favorites.dummy.DummyContent.DummyItem;
 
 import java.util.List;
 
 public class FavoritesRecyclerViewAdapter extends RecyclerView.Adapter<FavoritesRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
+    private List<FavoriteBase> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public FavoritesRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
+    public FavoritesRecyclerViewAdapter(List<FavoriteBase> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_favorites, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_favorites, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+        holder.mTvLineName.setText(mValues.get(position).getLineBase().getNameA());
+        holder.mTvStopName.setText(mValues.get(position).getStop().getName());
+        holder.mTvTimeNext.setText(mValues.get(position).getTimeNext());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,6 +47,10 @@ public class FavoritesRecyclerViewAdapter extends RecyclerView.Adapter<Favorites
         });
     }
 
+    public void setItems(List<FavoriteBase> stops) {
+        mValues = stops;
+    }
+
     @Override
     public int getItemCount() {
         return mValues.size();
@@ -54,20 +58,23 @@ public class FavoritesRecyclerViewAdapter extends RecyclerView.Adapter<Favorites
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
-        public DummyItem mItem;
+        public final TextView mTvLineName;
+        public final TextView mTvStopName;
+        public final TextView mTvTimeNext;
+
+        public FavoriteBase mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.id);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            mTvLineName = (TextView) view.findViewById(R.id.textViewLineName);
+            mTvStopName = (TextView) view.findViewById(R.id.textViewStopName);
+            mTvTimeNext = (TextView) view.findViewById(R.id.textViewTimeNext);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + mTvStopName.getText() + "'";
         }
     }
 }

@@ -18,9 +18,12 @@ public interface LineRouteContract {
         void showErrorLoadingList();
 
         void displayRoute(List<StopBase> stops);
+
+        void displayStopDetail(StopBase item);
     }
 
     interface Presenter extends BasePresenter {
 
+        void onStopClicked(StopBase item);
     }
 }

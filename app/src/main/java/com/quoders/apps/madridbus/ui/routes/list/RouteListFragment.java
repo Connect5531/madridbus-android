@@ -94,5 +94,7 @@ public class RouteListFragment extends Fragment implements RouteListViewContract
 
     public interface OnListFragmentInteractionListener {
         void onListFragmentInteraction(StopBase item);
+
+        void onSetFavoriteStop(StopBase mItem);
     }
 }

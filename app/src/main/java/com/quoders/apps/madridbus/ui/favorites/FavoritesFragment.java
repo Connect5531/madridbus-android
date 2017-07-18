@@ -2,6 +2,7 @@ package com.quoders.apps.madridbus.ui.favorites;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,20 +10,29 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.quoders.apps.madridbus.BaseFragment;
+import com.quoders.apps.madridbus.MadridBusApplication;
 import com.quoders.apps.madridbus.R;
+import com.quoders.apps.madridbus.domain.repository.favorites.FavoritesRepositoryModule;
 import com.quoders.apps.madridbus.model.favorites.FavoriteBase;
-import com.quoders.apps.madridbus.ui.favorites.dummy.DummyContent;
-import com.quoders.apps.madridbus.ui.favorites.dummy.DummyContent.DummyItem;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 
 public class FavoritesFragment extends BaseFragment implements FavoritesContract.View {
 
     public static final String FRAGMENT_TAG = "com.quoders.apps.madridbus.ui.favorites.FavoritesFragment.FRAGMENT_TAG";
 
-    private static final String ARG_COLUMN_COUNT = "column-count";
     private OnListFragmentInteractionListener mListener;
+
+    private ContentLoadingProgressBar mProgressBar;
+    private FavoritesRecyclerViewAdapter mAdapter;
+
+    @Inject
+    FavoritesPresenter mPresenter;
+
 
     public FavoritesFragment() {
     }
@@ -31,7 +41,6 @@ public class FavoritesFragment extends BaseFragment implements FavoritesContract
     public static FavoritesFragment newInstance(int columnCount) {
         FavoritesFragment fragment = new FavoritesFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
         return fragment;
     }
@@ -42,22 +51,30 @@ public class FavoritesFragment extends BaseFragment implements FavoritesContract
 
         if (getArguments() != null) {
         }
+
+        DaggerFavoritesComponent.builder()
+                .applicationComponent(((MadridBusApplication)getActivity().getApplication()).getApplicationComponent())
+                .favoritesPresenterModule(new FavoritesPresenterModule(this))
+                .favoritesRepositoryModule(new FavoritesRepositoryModule())
+                .build().inject(this);
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_favorites_list, container, false);
-
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(new FavoritesRecyclerViewAdapter(DummyContent.ITEMS, mListener));
-        }
+        mProgressBar = (ContentLoadingProgressBar)view.findViewById(R.id.progressBarListsList);
+        initFavoritesListRecyclerView(view);
+        mPresenter.start();
         return view;
     }
 
+    private void initFavoritesListRecyclerView(View view) {
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        mAdapter = new FavoritesRecyclerViewAdapter(new ArrayList<>(), mListener);
+        recyclerView.setAdapter(mAdapter);
+    }
 
     @Override
     public void onAttach(Context context) {
@@ -88,7 +105,8 @@ public class FavoritesFragment extends BaseFragment implements FavoritesContract
 
     @Override
     public void setFavoritesList(List<FavoriteBase> resultValues) {
-
+        mAdapter.setItems(resultValues);
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -102,6 +120,6 @@ public class FavoritesFragment extends BaseFragment implements FavoritesContract
     }
 
     public interface OnListFragmentInteractionListener {
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(FavoriteBase item);
     }
 }

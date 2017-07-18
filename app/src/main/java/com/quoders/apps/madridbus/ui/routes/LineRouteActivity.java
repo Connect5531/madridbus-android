@@ -112,7 +112,17 @@ public class LineRouteActivity extends BaseActivity implements LineRouteContract
     }
 
     @Override
+    public void displayStopDetail(StopBase item) {
+
+    }
+
+    @Override
     public void onListFragmentInteraction(StopBase item) {
+        mPresenter.onStopClicked(item);
+    }
+
+    @Override
+    public void onSetFavoriteStop(StopBase mItem) {
 
     }
 

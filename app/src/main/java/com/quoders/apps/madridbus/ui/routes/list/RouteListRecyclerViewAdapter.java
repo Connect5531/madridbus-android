@@ -4,11 +4,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageSwitcher;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.quoders.apps.madridbus.R;
 import com.quoders.apps.madridbus.model.StopBase;
-import com.quoders.apps.madridbus.ui.routes.dummy.DummyContent.DummyItem;
 
 import java.util.List;
 
@@ -34,14 +35,15 @@ public class RouteListRecyclerViewAdapter extends RecyclerView.Adapter<RouteList
         holder.mCode.setText(mValues.get(position).getCode());
         holder.mName.setText(mValues.get(position).getName());
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
-                }
+        holder.mView.setOnClickListener(v -> {
+            if (null != mListener) {
+                mListener.onListFragmentInteraction(holder.mItem);
+            }
+        });
+
+        holder.mIvFavorite.setOnClickListener(v -> {
+            if(null != mListener) {
+                mListener.onSetFavoriteStop(holder.mItem);
             }
         });
     }
@@ -59,6 +61,8 @@ public class RouteListRecyclerViewAdapter extends RecyclerView.Adapter<RouteList
         public final View mView;
         public final TextView mCode;
         public final TextView mName;
+        public final ImageView mIvFavorite;
+
         public StopBase mItem;
 
         public ViewHolder(View view) {
@@ -66,6 +70,7 @@ public class RouteListRecyclerViewAdapter extends RecyclerView.Adapter<RouteList
             mView = view;
             mCode = (TextView) view.findViewById(R.id.stopCode);
             mName = (TextView) view.findViewById(R.id.stopName);
+            mIvFavorite = (ImageView) view.findViewById(R.id.imageViewStopFavorite);
         }
 
         @Override

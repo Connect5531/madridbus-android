@@ -25,6 +25,15 @@ public interface EmtRestApi {
                                              @Field("SelectDate") String SelectDate);
 
 
+    /**
+     * Get route info for a specific line
+     *
+     * @param idClient The user Id
+     * @param passKey Password
+     * @param SelectDate Date
+     * @return Observable with  the route info object
+     */
+
     @FormUrlEncoded
     @POST("/emt-proxy-server/last/bus/GetRouteLines.php")
     Observable<RouteInfoEmt> getLineRoute(@Field("idClient") String idClient, @Field("passKey")
