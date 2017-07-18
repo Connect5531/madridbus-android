@@ -30,7 +30,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.routes.LineRouteActivity"></activity>
+        <activity android:name=".ui.routes.LineRouteActivity" />
+        <activity android:name=".ui.stopInfo.StopInfoActivity"></activity>
     </application>
 
 </manifest>

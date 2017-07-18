@@ -66,4 +66,8 @@ public class LineRoutePresenter implements LineRouteContract.Presenter {
         mDisposables.clear();
     }
 
+    @Override
+    public void onStopClicked(StopBase item) {
+        mView.displayStopDetail(item);
+    }
 }

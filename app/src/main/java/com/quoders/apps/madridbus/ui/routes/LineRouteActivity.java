@@ -1,5 +1,6 @@
 package com.quoders.apps.madridbus.ui.routes;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -17,6 +18,7 @@ import com.quoders.apps.madridbus.model.StopBase;
 import com.quoders.apps.madridbus.ui.model.LineUI;
 import com.quoders.apps.madridbus.ui.routes.list.RouteListFragment;
 import com.quoders.apps.madridbus.ui.routes.map.RouteMapFragment;
+import com.quoders.apps.madridbus.ui.stopInfo.StopInfoActivity;
 
 import java.util.List;
 
@@ -112,8 +114,10 @@ public class LineRouteActivity extends BaseActivity implements LineRouteContract
     }
 
     @Override
-    public void displayStopDetail(StopBase item) {
-
+    public void displayStopDetail(StopBase stop) {
+        Intent intent = new Intent(this, StopInfoActivity.class);
+        intent.putExtra(StopInfoActivity.INTENT_EXTRA_STOP_CODE, stop.getCode());
+        startActivity(intent);
     }
 
     @Override
