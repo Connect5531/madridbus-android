@@ -14,5 +14,7 @@ interface StopInfoContract {
         fun showErrorLoadingInfo()
     }
 
-    interface Presenter : BasePresenter
+    interface Presenter : BasePresenter {
+        fun onViewStart(stopId: String)
+    }
 }

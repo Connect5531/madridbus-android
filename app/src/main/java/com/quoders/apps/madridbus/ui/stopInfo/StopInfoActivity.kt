@@ -7,12 +7,17 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import com.quoders.apps.madridbus.BaseActivity
 import com.quoders.apps.madridbus.R
+import javax.inject.Inject
 
 class StopInfoActivity : BaseActivity(), StopInfoContract.View {
 
     companion object {
         const val INTENT_EXTRA_STOP_CODE = "com.quoders.apps.madridbus.ui.stopInfo.INTENT_EXTRA_STOP_CODE"
     }
+
+    @Inject
+    lateinit var mPresenter: StopInfoContract.Presenter
+
 
     @BindView(R.id.progressBarStopInfo)
     internal var mProgressBar: ContentLoadingProgressBar? = null
@@ -23,7 +28,7 @@ class StopInfoActivity : BaseActivity(), StopInfoContract.View {
         ButterKnife.bind(this)
 
         val stopCode = intent.getStringExtra(INTENT_EXTRA_STOP_CODE)
-
+        mPresenter.onViewStart(stopCode)
     }
 
     override fun showProgressBar() {

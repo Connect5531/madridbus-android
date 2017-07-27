@@ -39,5 +39,12 @@ public interface EmtRestApi {
     Observable<RouteInfoEmt> getLineRoute(@Field("idClient") String idClient, @Field("passKey")
             String passKey, @Field("SelectDate") String SelectDate, @Field("Lines") String Lines);
 
+
+    @FormUrlEncoded
+    @POST("/emt-proxy-server/last/geo/GetArriveStop.php")
+    Observable<Object> getStopArrivals(@Field("idClient") String idClient, @Field("passKey")
+            String passKey, @Field("idStop") String stopId, @Field("cultureInfo") String culture);
+
+
 }
 
