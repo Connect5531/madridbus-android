@@ -1,5 +1,6 @@
 package com.quoders.apps.madridbus.domain.network;
 
+import com.quoders.apps.madridbus.model.arrivals.Arrivals;
 import com.quoders.apps.madridbus.model.lines.ListLineInfoEmt;
 import com.quoders.apps.madridbus.model.routes.RouteInfoEmt;
 
@@ -42,7 +43,7 @@ public interface EmtRestApi {
 
     @FormUrlEncoded
     @POST("/emt-proxy-server/last/geo/GetArriveStop.php")
-    Observable<Object> getStopArrivals(@Field("idClient") String idClient, @Field("passKey")
+    Observable<Arrivals> getStopArrivals(@Field("idClient") String idClient, @Field("passKey")
             String passKey, @Field("idStop") String stopId, @Field("cultureInfo") String culture);
 
 

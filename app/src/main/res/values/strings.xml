@@ -15,7 +15,7 @@
     <string name="dialog_button_neutral">OK</string>
     <string name="tab_item_route">Route</string>
     <string name="tab_item_map">Map</string>
-
+    <string name="error_dialog_stop_arrivals">Unable to retrieve arrivals information. Please try again later.</string>
 
 
 </resources>

@@ -2,7 +2,6 @@ package com.quoders.apps.madridbus.ui.lines;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,7 +14,6 @@ import com.quoders.apps.madridbus.BaseFragment;
 import com.quoders.apps.madridbus.MadridBusApplication;
 import com.quoders.apps.madridbus.R;
 import com.quoders.apps.madridbus.domain.repository.lines.LinesRepositoryModule;
-import com.quoders.apps.madridbus.model.LineBase;
 import com.quoders.apps.madridbus.ui.model.LineUI;
 
 import java.util.ArrayList;

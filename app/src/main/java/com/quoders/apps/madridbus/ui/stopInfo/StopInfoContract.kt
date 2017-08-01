@@ -2,6 +2,7 @@ package com.quoders.apps.madridbus.ui.stopInfo
 
 import com.quoders.apps.madridbus.BasePresenter
 import com.quoders.apps.madridbus.BaseView
+import com.quoders.apps.madridbus.model.arrivals.Arrivals
 
 interface StopInfoContract {
 
@@ -11,10 +12,10 @@ interface StopInfoContract {
 
         fun dismissProgressBar()
 
-        fun showErrorLoadingInfo()
+        fun showErrorGettingArrivals()
+
+        fun  displayArrivals(arrivals: Arrivals)
     }
 
-    interface Presenter : BasePresenter {
-        fun onViewStart(stopId: String)
-    }
+    interface Presenter : BasePresenter
 }

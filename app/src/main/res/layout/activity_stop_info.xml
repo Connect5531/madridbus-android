@@ -7,6 +7,13 @@
     android:layout_height="match_parent"
     tools:context="com.quoders.apps.madridbus.ui.stopInfo.StopInfoActivity">
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerViewStopInfoArrivals"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutManager="LinearLayoutManager"
+        tools:listitem="@layout/stop_info_arrival_item"/>
+
     <android.support.v4.widget.ContentLoadingProgressBar
         android:id="@+id/progressBarStopInfo"
         android:layout_width="wrap_content"

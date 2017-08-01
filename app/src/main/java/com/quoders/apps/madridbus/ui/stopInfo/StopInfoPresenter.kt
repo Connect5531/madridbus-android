@@ -1,34 +1,30 @@
 package com.quoders.apps.madridbus.ui.stopInfo
 
-import com.quoders.apps.madridbus.domain.interactors.route.RouteInteractor
+import com.quoders.apps.madridbus.domain.interactors.stopInfo.StopInfoInteractor
 import com.quoders.apps.madridbus.model.StopBase
+import com.quoders.apps.madridbus.model.arrivals.Arrivals
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableObserver
 import javax.inject.Inject
 
 class StopInfoPresenter @Inject
-constructor(private val mView: StopInfoContract.View, private val mInteractor: RouteInteractor) : StopInfoContract.Presenter {
-
-    override fun onViewStart(stopId: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+constructor(private val mView: StopInfoContract.View, private val mInteractor: StopInfoInteractor) : StopInfoContract.Presenter {
 
     private val mDisposables = CompositeDisposable()
 
     override fun start() {
         mView.showProgressBar()
 
-        val observer = object : DisposableObserver<List<StopBase>>() {
-            override fun onNext(stops: List<StopBase>?) {
-                if (stops != null && stops.iterator().hasNext()) {
-                    //mView.displayRoute(stops)
-                } else {
-                    onError(null)
+        val observer = object : DisposableObserver<Arrivals>() {
+            override fun onNext(arrivals: Arrivals?) {
+                if(arrivals != null && arrivals.arrives != null && !arrivals.arrives.isEmpty()) {
+                    mView.displayArrivals(arrivals)
                 }
             }
 
             override fun onError(e: Throwable?) {
-                //mView.showErrorLoadingList()
+                mView.showErrorGettingArrivals()
+                mView.dismissProgressBar()
             }
 
             override fun onComplete() {

@@ -33,15 +33,12 @@ public class RouteInteractor extends BaseInteractor {
     @Override
     protected Observable<List<StopBase>> buildInteractorObservable() {
         return mRouteRepository.getRoute(mCode)
-                .map(new Function<Iterable<StopBase>, List<StopBase>>() {
-                    @Override
-                    public List<StopBase> apply(Iterable<StopBase> stopBases) throws Exception {
-                        List<StopBase> stops = new ArrayList<>();
-                        for (StopBase stop : stopBases) {
-                            stops.add(stop);
-                        }
-                        return stops;
+                .map(stopBases -> {
+                    List<StopBase> stops = new ArrayList<>();
+                    for (StopBase stop : stopBases) {
+                        stops.add(stop);
                     }
+                    return stops;
                 });
     }
 }
