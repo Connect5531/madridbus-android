@@ -1,34 +1,38 @@
 package com.quoders.apps.madridbus.ui.routes;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
+import com.quoders.apps.madridbus.domain.interactors.favorites.AddFavoriteInteractor;
+import com.quoders.apps.madridbus.domain.interactors.favorites.GetFavoritesInteractor;
 import com.quoders.apps.madridbus.domain.interactors.route.RouteInteractor;
-import com.quoders.apps.madridbus.domain.repository.routes.RouteCloudRepository;
-import com.quoders.apps.madridbus.model.LineBase;
 import com.quoders.apps.madridbus.model.StopBase;
-import com.quoders.apps.madridbus.ui.home.HomeContract;
-import com.quoders.apps.madridbus.ui.model.LineUI;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observer;
+import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 
 public class LineRoutePresenter implements LineRouteContract.Presenter {
 
-    private LineRouteContract.View mView;
-    private RouteInteractor mInteractor;
+    private final LineRouteContract.View mView;
+    private final RouteInteractor mRouteInteractor;
+    private final GetFavoritesInteractor mGetFavoritesInteractor;
+    private final AddFavoriteInteractor mAddFavoriteInteractor;
+
     private final CompositeDisposable mDisposables = new CompositeDisposable();
 
+
     @Inject
-    public LineRoutePresenter(@NonNull LineRouteContract.View view, @NonNull RouteInteractor interactor) {
+    public LineRoutePresenter(@NonNull LineRouteContract.View view, @NonNull RouteInteractor routeInteractor,
+                              @NonNull GetFavoritesInteractor getFavoritesInteractor,
+                              @NonNull AddFavoriteInteractor addFavoritesInteractor) {
         mView = view;
-        mInteractor = interactor;
+        mRouteInteractor = routeInteractor;
+        mGetFavoritesInteractor = getFavoritesInteractor;
+        mAddFavoriteInteractor = addFavoritesInteractor;
     }
 
     @Override
@@ -58,7 +62,7 @@ public class LineRoutePresenter implements LineRouteContract.Presenter {
 
         mDisposables.add(observer);
 
-        mInteractor.execute(observer);
+        mRouteInteractor.execute(observer);
     }
 
     @Override
@@ -69,5 +73,25 @@ public class LineRoutePresenter implements LineRouteContract.Presenter {
     @Override
     public void onStopClicked(StopBase item) {
         mView.displayStopDetail(item);
+    }
+
+    @Override
+    public void onAddStopToFavoritesClick(StopBase stop) {
+        mAddFavoriteInteractor.execute(new DisposableObserver() {
+            @Override
+            public void onNext(Object o) {
+                mView.showFavoriteAddedSuccessMessage();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                mView.showErrorAddingFavoriteMessage();
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
     }
 }

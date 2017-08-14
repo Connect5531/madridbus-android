@@ -1,10 +1,8 @@
 package com.quoders.apps.madridbus.ui.favorites;
 
 
-import com.quoders.apps.madridbus.domain.interactors.favorites.FavoritesInteractor;
+import com.quoders.apps.madridbus.domain.interactors.favorites.GetFavoritesInteractor;
 import com.quoders.apps.madridbus.domain.repository.favorites.FavoritesRepositoryMapper;
-import com.quoders.apps.madridbus.domain.repository.lines.LinesRepositoryMapper;
-import com.quoders.apps.madridbus.model.LineBase;
 import com.quoders.apps.madridbus.model.favorites.FavoriteBase;
 
 import javax.inject.Inject;
@@ -15,13 +13,13 @@ import io.reactivex.observers.DisposableObserver;
 class FavoritesPresenter implements FavoritesContract.Presenter {
 
     private final FavoritesContract.View mView;
-    private final FavoritesInteractor mFavoritesInteractor;
+    private final GetFavoritesInteractor mGetFavoritesInteractor;
     private final CompositeDisposable mDisposables = new CompositeDisposable();
 
     @Inject
-    public FavoritesPresenter(FavoritesContract.View view, FavoritesInteractor favoritesInteractor) {
+    public FavoritesPresenter(FavoritesContract.View view, GetFavoritesInteractor getFavoritesInteractor) {
         this.mView = view;
-        this.mFavoritesInteractor = favoritesInteractor;
+        this.mGetFavoritesInteractor = getFavoritesInteractor;
     }
 
     @Override

@@ -16,6 +16,7 @@
     <string name="tab_item_route">Route</string>
     <string name="tab_item_map">Map</string>
     <string name="error_dialog_stop_arrivals">Unable to retrieve arrivals information. Please try again later.</string>
+    <string name="favorite_added_success">Stop added to favorites list</string>
 
 
 </resources>

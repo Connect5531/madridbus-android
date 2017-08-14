@@ -20,10 +20,16 @@ public interface LineRouteContract {
         void displayRoute(List<StopBase> stops);
 
         void displayStopDetail(StopBase item);
+
+        void showFavoriteAddedSuccessMessage();
+
+        void showErrorAddingFavoriteMessage();
     }
 
     interface Presenter extends BasePresenter {
 
         void onStopClicked(StopBase item);
+
+        void onAddStopToFavoritesClick(StopBase stop);
     }
 }

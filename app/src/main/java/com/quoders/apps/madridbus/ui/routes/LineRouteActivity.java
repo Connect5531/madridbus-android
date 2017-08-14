@@ -10,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
+import android.widget.Toast;
 
 import com.quoders.apps.madridbus.BaseActivity;
 import com.quoders.apps.madridbus.R;
@@ -121,13 +122,27 @@ public class LineRouteActivity extends BaseActivity implements LineRouteContract
     }
 
     @Override
+    public void showFavoriteAddedSuccessMessage() {
+        Toast.makeText(this, R.string.favorite_added_success, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showErrorAddingFavoriteMessage() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.error_dialog_generic_title)
+                .setMessage(R.string.error_dialog_line_list_message)
+                .setNeutralButton(R.string.dialog_button_neutral, null)
+                .show();
+    }
+
+    @Override
     public void onListFragmentInteraction(StopBase item) {
         mPresenter.onStopClicked(item);
     }
 
     @Override
-    public void onSetFavoriteStop(StopBase mItem) {
-
+    public void onSetFavoriteStop(StopBase stop) {
+        mPresenter.onAddStopToFavoritesClick(stop);
     }
 
     @Override

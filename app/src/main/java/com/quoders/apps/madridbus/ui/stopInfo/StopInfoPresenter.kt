@@ -1,7 +1,6 @@
 package com.quoders.apps.madridbus.ui.stopInfo
 
 import com.quoders.apps.madridbus.domain.interactors.stopInfo.StopInfoInteractor
-import com.quoders.apps.madridbus.model.StopBase
 import com.quoders.apps.madridbus.model.arrivals.Arrivals
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableObserver
