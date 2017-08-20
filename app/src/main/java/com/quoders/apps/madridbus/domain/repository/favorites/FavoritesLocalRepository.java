@@ -5,8 +5,6 @@ import com.quoders.apps.madridbus.model.favorites.FavoriteBase;
 
 import java.util.concurrent.Callable;
 
-import javax.inject.Inject;
-
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.realm.Realm;
@@ -17,9 +15,8 @@ public class FavoritesLocalRepository implements LocalRepository<FavoriteBase> {
 
     private final Realm mRealm;
 
-    @Inject
-    public FavoritesLocalRepository(Realm mRealm) {
-        this.mRealm = mRealm;
+    public FavoritesLocalRepository() {
+        mRealm = Realm.getDefaultInstance();
     }
 
     @Override

@@ -12,6 +12,5 @@ public interface LinesComponent {
 
     void inject(LinesFragment linesFragment);
 
-
 }
 

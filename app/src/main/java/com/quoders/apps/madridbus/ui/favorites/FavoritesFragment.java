@@ -3,11 +3,14 @@ package com.quoders.apps.madridbus.ui.favorites;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.widget.ContentLoadingProgressBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.quoders.apps.madridbus.BaseFragment;
 import com.quoders.apps.madridbus.MadridBusApplication;
@@ -28,6 +31,9 @@ public class FavoritesFragment extends BaseFragment implements FavoritesContract
     private OnListFragmentInteractionListener mListener;
 
     private ContentLoadingProgressBar mProgressBar;
+    private ImageView mIvFavorites;
+    private TextView mTvFavoritesMsg;
+
     private FavoritesRecyclerViewAdapter mAdapter;
 
     @Inject
@@ -63,10 +69,16 @@ public class FavoritesFragment extends BaseFragment implements FavoritesContract
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_favorites_list, container, false);
-        mProgressBar = (ContentLoadingProgressBar)view.findViewById(R.id.progressBarListsList);
+        initWidgets(view);
         initFavoritesListRecyclerView(view);
         mPresenter.start();
         return view;
+    }
+
+    private void initWidgets(View view) {
+        mProgressBar = (ContentLoadingProgressBar)view.findViewById(R.id.progressBarFavoritesList);
+        mIvFavorites = (ImageView)view.findViewById(R.id.imageViewFavorites);
+        mTvFavoritesMsg = (TextView)view.findViewById(R.id.textViewFavorites);
     }
 
     private void initFavoritesListRecyclerView(View view) {
@@ -100,7 +112,7 @@ public class FavoritesFragment extends BaseFragment implements FavoritesContract
 
     @Override
     public void showProgressBar() {
-
+        mProgressBar.show();
     }
 
     @Override
@@ -111,12 +123,34 @@ public class FavoritesFragment extends BaseFragment implements FavoritesContract
 
     @Override
     public void showErrorLoadingList() {
-
+        new AlertDialog.Builder(getActivity())
+                .setTitle(R.string.error_dialog_generic_title)
+                .setMessage(R.string.error_dialog_favorites_error_message)
+                .setNeutralButton(R.string.dialog_button_neutral, null)
+                .show();
     }
 
     @Override
     public void dismissProgressBar() {
+        mProgressBar.hide();
+    }
 
+    @Override
+    public void showEmptyFavoritesMessage() {
+        mTvFavoritesMsg.setVisibility(View.VISIBLE);
+        mIvFavorites.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideEmptyFavoritesMessage() {
+        mTvFavoritesMsg.setVisibility(View.GONE);
+        mIvFavorites.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mPresenter.stop();
     }
 
     public interface OnListFragmentInteractionListener {

@@ -3,8 +3,6 @@ package com.quoders.apps.madridbus.domain.interactors.favorites;
 
 import com.quoders.apps.madridbus.BaseInteractor;
 import com.quoders.apps.madridbus.domain.repository.favorites.FavoritesRepository;
-import com.quoders.apps.madridbus.model.StopBase;
-import com.quoders.apps.madridbus.model.favorites.FavoriteBase;
 
 
 import javax.inject.Inject;

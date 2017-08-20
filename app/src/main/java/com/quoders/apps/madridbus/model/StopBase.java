@@ -1,11 +1,16 @@
 package com.quoders.apps.madridbus.model;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 public class StopBase extends RealmObject {
 
-    private String name;
+    public static final String ID = "code";
+
+    @PrimaryKey
     private String code;
+
+    private String name;
     private int transportType;
     private Double latitude;
     private Double longitude;

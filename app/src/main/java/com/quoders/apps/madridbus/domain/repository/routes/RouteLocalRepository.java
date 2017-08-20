@@ -1,13 +1,10 @@
 package com.quoders.apps.madridbus.domain.repository.routes;
 
 import com.quoders.apps.madridbus.domain.repository.LocalRepository;
-import com.quoders.apps.madridbus.domain.repository.Repository;
 import com.quoders.apps.madridbus.model.LineBase;
 import com.quoders.apps.madridbus.model.StopBase;
 
 import java.util.concurrent.Callable;
-
-import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -19,9 +16,8 @@ public class RouteLocalRepository implements LocalRepository<StopBase> {
 
     private final Realm mRealm;
 
-    @Inject
-    public RouteLocalRepository(Realm mRealm) {
-        this.mRealm = mRealm;
+    public RouteLocalRepository() {
+        this.mRealm = Realm.getDefaultInstance();
     }
 
     @Override

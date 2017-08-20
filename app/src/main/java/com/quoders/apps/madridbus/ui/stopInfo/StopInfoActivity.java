@@ -81,7 +81,7 @@ public class StopInfoActivity extends BaseActivity implements StopInfoContract.V
         new AlertDialog.Builder(this)
                 .setTitle(R.string.error_dialog_generic_title)
                 .setMessage(R.string.error_dialog_stop_arrivals)
-                .setNeutralButton(R.string.dialog_button_neutral, null)
+                .setNeutralButton(R.string.dialog_button_neutral, (dialog, which) -> finish())
                 .show();
     }
 

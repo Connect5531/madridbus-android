@@ -3,7 +3,6 @@ package com.quoders.apps.madridbus.ui.home;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -34,6 +33,7 @@ public class HomeActivity extends BaseActivity implements
     @Inject
     HomePresenter mPresenter;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,22 +53,19 @@ public class HomeActivity extends BaseActivity implements
     private void initBottomNavigation() {
         BottomNavigationView bottomNavigationView = (BottomNavigationView)findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(
-                new BottomNavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.action_map:
-                                mPresenter.onMapTabSelected();
-                                break;
-                            case R.id.action_list:
-                                mPresenter.onLinesTabSelected();
-                                break;
-                            case R.id.action_favorites:
-                                mPresenter.onFavoritesTabSelected();
-                                break;
-                        }
-                        return true;
+                item -> {
+                    switch (item.getItemId()) {
+                        case R.id.action_map:
+                            mPresenter.onMapTabSelected();
+                            break;
+                        case R.id.action_list:
+                            mPresenter.onLinesTabSelected();
+                            break;
+                        case R.id.action_favorites:
+                            mPresenter.onFavoritesTabSelected();
+                            break;
                     }
+                    return true;
                 });
     }
 
@@ -177,6 +174,11 @@ public class HomeActivity extends BaseActivity implements
     @Override
     public void onListFragmentInteraction(LineUI item) {
         mPresenter.onLineSelected(item);
+    }
+
+    @Override
+    public void onLoadingLinesListError() {
+        displayMapView();
     }
 
     @Override

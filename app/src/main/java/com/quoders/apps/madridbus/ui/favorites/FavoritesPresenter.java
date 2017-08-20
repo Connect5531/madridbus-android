@@ -30,29 +30,30 @@ class FavoritesPresenter implements FavoritesContract.Presenter {
             public void onNext(Iterable<FavoriteBase> favorites) {
                 if(favorites != null && favorites.iterator().hasNext()) {
                     mView.setFavoritesList(FavoritesRepositoryMapper.toUIList(favorites));
+                    mView.hideEmptyFavoritesMessage();
                 } else {
-                    mView.dismissProgressBar();
-                    mView.showErrorLoadingList();
+                    mView.showEmptyFavoritesMessage();
                 }
             }
 
             @Override
             public void onError(Throwable e) {
-
+                mView.showErrorLoadingList();
             }
 
             @Override
             public void onComplete() {
-
+                mView.dismissProgressBar();
             }
         };
 
         mDisposables.add(observer);
 
+        mGetFavoritesInteractor.execute(observer);
     }
 
     @Override
     public void stop() {
-
+        mGetFavoritesInteractor.release();
     }
 }

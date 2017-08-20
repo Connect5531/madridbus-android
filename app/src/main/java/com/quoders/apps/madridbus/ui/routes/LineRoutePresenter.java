@@ -11,7 +11,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.Single;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableObserver;
 
@@ -26,7 +25,8 @@ public class LineRoutePresenter implements LineRouteContract.Presenter {
 
 
     @Inject
-    public LineRoutePresenter(@NonNull LineRouteContract.View view, @NonNull RouteInteractor routeInteractor,
+    public LineRoutePresenter(@NonNull LineRouteContract.View view,
+                              @NonNull RouteInteractor routeInteractor,
                               @NonNull GetFavoritesInteractor getFavoritesInteractor,
                               @NonNull AddFavoriteInteractor addFavoritesInteractor) {
         mView = view;
@@ -68,6 +68,7 @@ public class LineRoutePresenter implements LineRouteContract.Presenter {
     @Override
     public void stop() {
         mDisposables.clear();
+        mRouteInteractor.release();
     }
 
     @Override
@@ -77,21 +78,7 @@ public class LineRoutePresenter implements LineRouteContract.Presenter {
 
     @Override
     public void onAddStopToFavoritesClick(StopBase stop) {
-        mAddFavoriteInteractor.execute(new DisposableObserver() {
-            @Override
-            public void onNext(Object o) {
-                mView.showFavoriteAddedSuccessMessage();
-            }
+        mAddFavoriteInteractor.addFavorite(stop);
 
-            @Override
-            public void onError(Throwable e) {
-                mView.showErrorAddingFavoriteMessage();
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        });
     }
 }

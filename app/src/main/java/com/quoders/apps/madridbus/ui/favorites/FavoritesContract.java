@@ -3,7 +3,6 @@ package com.quoders.apps.madridbus.ui.favorites;
 import com.quoders.apps.madridbus.BasePresenter;
 import com.quoders.apps.madridbus.BaseView;
 import com.quoders.apps.madridbus.model.favorites.FavoriteBase;
-import com.quoders.apps.madridbus.ui.model.LineUI;
 
 import java.util.List;
 
@@ -18,6 +17,10 @@ public class FavoritesContract {
         void showErrorLoadingList();
 
         void dismissProgressBar();
+
+        void showEmptyFavoritesMessage();
+
+        void hideEmptyFavoritesMessage();
     }
 
     interface Presenter extends BasePresenter {

@@ -2,17 +2,13 @@ package com.quoders.apps.madridbus.domain.repository.routes;
 
 
 import com.quoders.apps.madridbus.domain.repository.Cache;
-import com.quoders.apps.madridbus.domain.repository.lines.LinesRepositoryMapper;
-import com.quoders.apps.madridbus.model.LineBase;
 import com.quoders.apps.madridbus.model.StopBase;
-import com.quoders.apps.madridbus.model.routes.RouteInfoEmt;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
-import io.reactivex.functions.Function;
 
 public class RouteRepositoryImpl implements RouteRepository {
 
@@ -45,16 +41,13 @@ public class RouteRepositoryImpl implements RouteRepository {
     }
 
     private Observable<Iterable<StopBase>> getCloudRouteObservable() {
-        return mCloudRepository.query().map(new Function<RouteInfoEmt, Iterable<StopBase>>() {
-            @Override
-            public Iterable<StopBase> apply(RouteInfoEmt routeInfoEmt) throws Exception {
-                List<StopBase> mapped = RouteRepositoryMapper.map(routeInfoEmt);
-                if(mapped != null && !mapped.isEmpty()) {
-                    mCache.setCache(mCode);
-                    mLocalRepository.add(mapped);
-                }
-                return mapped;
+        return mCloudRepository.query().map(routeInfoEmt -> {
+            List<StopBase> mapped = RouteRepositoryMapper.map(routeInfoEmt);
+            if(mapped != null && !mapped.isEmpty()) {
+                mCache.setCache(mCode);
+                mLocalRepository.add(mapped);
             }
+            return mapped;
         });
     }
 

@@ -8,7 +8,6 @@ import com.quoders.apps.madridbus.domain.network.NetworkModule;
 import javax.inject.Singleton;
 
 import dagger.Component;
-import io.realm.Realm;
 
 
 @Singleton
@@ -18,7 +17,6 @@ public interface ApplicationComponent {
   void inject(BaseActivity baseActivity);
   void inject(BaseFragment baseFragment);
 
-  Realm providesReal();
   SharedPreferences providesSharedPreferences();
   EmtRestApi providesEmtApi();
 }

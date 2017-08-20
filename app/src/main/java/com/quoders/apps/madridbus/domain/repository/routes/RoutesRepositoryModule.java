@@ -8,7 +8,6 @@ import com.quoders.apps.madridbus.domain.network.EmtRestApi;
 
 import dagger.Module;
 import dagger.Provides;
-import io.realm.Realm;
 
 @Module
 public class RoutesRepositoryModule {
@@ -20,10 +19,10 @@ public class RoutesRepositoryModule {
     }
 
     @Provides @FragmentScoped
-    RouteRepository provideLinesRepository(Realm realm, EmtRestApi emtRestApi, SharedPreferences sharedPreferences) {
+    RouteRepository provideLinesRepository(EmtRestApi emtRestApi, SharedPreferences sharedPreferences) {
 
         return new RouteRepositoryImpl(new RouteRepositoryCache(sharedPreferences),
-                new RouteCloudRepository(emtRestApi, mLineCode), new RouteLocalRepository(realm));
+                new RouteCloudRepository(emtRestApi, mLineCode), new RouteLocalRepository());
     }
 
     @Provides @FragmentScoped

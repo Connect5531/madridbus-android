@@ -8,16 +8,15 @@ import com.quoders.apps.madridbus.domain.network.EmtRestApi;
 
 import dagger.Module;
 import dagger.Provides;
-import io.realm.Realm;
 
 @Module
 public class LinesRepositoryModule {
 
     @Provides @FragmentScoped
-    LinesRepository provideLinesRepository(Realm realm, EmtRestApi emtRestApi, SharedPreferences sharedPreferences) {
+    LinesRepository provideLinesRepository(EmtRestApi emtRestApi, SharedPreferences sharedPreferences) {
 
         return new LinesRepositoryImpl(new LinesRepositoryCache(sharedPreferences),
-                new LinesCloudRepository(emtRestApi), new LinesLocalRepository(realm));
+                new LinesCloudRepository(emtRestApi), new LinesLocalRepository());
     }
 
     @Provides @FragmentScoped

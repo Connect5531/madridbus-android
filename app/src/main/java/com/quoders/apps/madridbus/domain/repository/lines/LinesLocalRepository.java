@@ -1,12 +1,9 @@
 package com.quoders.apps.madridbus.domain.repository.lines;
 
 import com.quoders.apps.madridbus.domain.repository.LocalRepository;
-import com.quoders.apps.madridbus.domain.repository.Repository;
 import com.quoders.apps.madridbus.model.LineBase;
 
 import java.util.concurrent.Callable;
-
-import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -18,9 +15,8 @@ public class LinesLocalRepository implements LocalRepository<LineBase> {
 
     private final Realm mRealm;
 
-    @Inject
-    public LinesLocalRepository(Realm mRealm) {
-        this.mRealm = mRealm;
+    public LinesLocalRepository() {
+        this.mRealm = Realm.getDefaultInstance();
     }
 
     @Override

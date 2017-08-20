@@ -7,7 +7,6 @@ import com.quoders.apps.madridbus.model.TransportType;
 import com.quoders.apps.madridbus.model.favorites.FavoriteBase;
 import com.quoders.apps.madridbus.model.lines.LineInfoEmt;
 import com.quoders.apps.madridbus.model.lines.ListLineInfoEmt;
-import com.quoders.apps.madridbus.ui.model.LineUI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,11 +30,19 @@ public class FavoritesRepositoryMapper {
         return string.replaceAll("\\s+$", "");
     }
 
-    public static List<FavoriteBase> toUIList(@NonNull Iterable<FavoriteBase> favorites) {
+    public static List<FavoriteBase> toUIList(Iterable<FavoriteBase> favorites) {
+        List<FavoriteBase> favoritesList = new ArrayList<>();
+        for (FavoriteBase favorite : favorites) {
+            favoritesList.add(new FavoriteBase(favorite.getId(), favorite.getStop(), favorite.getName()));
+        }
+        return favoritesList;
+    }
+
+    /*public static List<StopBase§> toUIList(@NonNull Iterable<FavoriteBase> favorites) {
         List<FavoriteBase> favoritesList = new ArrayList<>();
         for (FavoriteBase line : favorites) {
             //lines.add(new LineUI(line.getCode(), line.getNameA(), line.getNameB(), line.getShortName(), line.getTransportType()));
         }
         return favoritesList;
-    }
+    }*/
 }

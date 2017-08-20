@@ -1,6 +1,7 @@
 package com.quoders.apps.madridbus.ui.lines;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v7.app.AlertDialog;
@@ -110,7 +111,13 @@ public class LinesFragment extends BaseFragment implements LinesContract.View {
         new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.error_dialog_generic_title)
                 .setMessage(R.string.error_dialog_line_list_message)
-                .setNeutralButton(R.string.dialog_button_neutral, null)
+                .setNeutralButton(R.string.dialog_button_neutral, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mListener.onLoadingLinesListError();
+                    }
+                })
+                .setCancelable(false)
                 .show();
     }
 
@@ -120,7 +127,9 @@ public class LinesFragment extends BaseFragment implements LinesContract.View {
     }
 
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
+
         void onListFragmentInteraction(LineUI item);
+
+        void onLoadingLinesListError();
     }
 }
