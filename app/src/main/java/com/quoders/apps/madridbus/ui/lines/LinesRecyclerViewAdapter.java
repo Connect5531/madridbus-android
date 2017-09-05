@@ -7,21 +7,17 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.quoders.apps.madridbus.R;
-import com.quoders.apps.madridbus.ui.lines.dummy.DummyContent.DummyItem;
+import com.quoders.apps.madridbus.model.LineBase;
+import com.quoders.apps.madridbus.ui.model.LineUI;
 
 import java.util.List;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link LinesFragment.OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
- */
 public class LinesRecyclerViewAdapter extends RecyclerView.Adapter<LinesRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
+    private List<LineUI> mValues;
     private final LinesFragment.OnListFragmentInteractionListener mListener;
 
-    public LinesRecyclerViewAdapter(List<DummyItem> items, LinesFragment.OnListFragmentInteractionListener listener) {
+    public LinesRecyclerViewAdapter(List<LineUI> items, LinesFragment.OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -35,8 +31,8 @@ public class LinesRecyclerViewAdapter extends RecyclerView.Adapter<LinesRecycler
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+        holder.mIdView.setText(mValues.get(position).getShortName());
+        holder.mContentView.setText(mValues.get(position).getNameA());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,18 +46,22 @@ public class LinesRecyclerViewAdapter extends RecyclerView.Adapter<LinesRecycler
         });
     }
 
+    void setItems(List<LineUI> resultValues) {
+        mValues = resultValues;
+    }
+
     @Override
     public int getItemCount() {
         return mValues.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
-        public DummyItem mItem;
+    class ViewHolder extends RecyclerView.ViewHolder {
+        final View mView;
+        final TextView mIdView;
+        final TextView mContentView;
+        LineUI mItem;
 
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             super(view);
             mView = view;
             mIdView = (TextView) view.findViewById(R.id.id);

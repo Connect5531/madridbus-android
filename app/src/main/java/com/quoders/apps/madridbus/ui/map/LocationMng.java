@@ -1,149 +1,115 @@
 package com.quoders.apps.madridbus.ui.map;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 
 
-public class LocationMng implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener,
-        com.google.android.gms.location.LocationListener {
+public class LocationMng {
 
     private static final float MAX_ACCURACY = 80f;
 
-    private final Context mContext;
+    private final Activity mActivity;
     private LocationManagerCallback mCallback;
-    private LocationRequest mLocationRequest;
-    protected GoogleApiClient mGoogleApiClient;
     protected Location mCurrentLocation;
-    private boolean mRequestingLocationUpdates;
+    private LocationManager mLocationManager;
+    private LocationListener locationListener;
+    private boolean mPermissionGranted;
 
 
-    public LocationMng(Context context, boolean requestUpdates, LocationManagerCallback callback) {
-
-        this.mContext = context;
+    public LocationMng(Activity activity, LocationManagerCallback callback) {
+        this.mActivity = activity;
         this.mCallback = callback;
-        this.mRequestingLocationUpdates = requestUpdates;
-
-        buildGoogleApiClient(context);
+        checkPermission();
     }
 
-    public void startLocationService() {
-        mGoogleApiClient.connect();
+    private boolean checkPermission() {
+        Dexter.withActivity(mActivity)
+                .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+                .withListener(new PermissionListener() {
+                    @Override public void onPermissionGranted(PermissionGrantedResponse response) {
+                        mPermissionGranted = true;
+                        initialiseLocationManager();
+                    }
+                    @Override public void onPermissionDenied(PermissionDeniedResponse response) {
+                        mPermissionGranted = false;
+                    }
+                    @Override public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                        Log.i("madrid-bus-permissions", "onPermissionRationaleShouldBeShown");
+                    }
+                })
+                .check();
+
+        return mPermissionGranted;
     }
 
-    public void stopLocationService() {
-        if (mGoogleApiClient.isConnected()) {
-            mGoogleApiClient.disconnect();
-        }
+    private void initialiseLocationManager() {
+
+        // Acquire a reference to the system Location Manager
+        mLocationManager = (LocationManager) mActivity.getSystemService(Context.LOCATION_SERVICE);
+
+        // Define a listener that responds to location updates
+        locationListener = new LocationListener() {
+            public void onLocationChanged(Location location) {
+                // Called when a new location is found by the network location provider.
+                makeUseOfNewLocation(location);
+            }
+
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+            }
+
+            public void onProviderEnabled(String provider) {
+            }
+
+            public void onProviderDisabled(String provider) {
+            }
+        };
     }
 
-    /**
-     * Builds a GoogleApiClient. Uses the addApi() method to request the LocationServices API.
-     */
-    protected synchronized void buildGoogleApiClient(Context context) {
-
-        mGoogleApiClient = new GoogleApiClient.Builder(context)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
+    private void makeUseOfNewLocation(Location location) {
+        Log.i("mb-location-provider", location.getProvider());
+        Log.i("mb-location-accuracy", String.valueOf(location.getAccuracy()));
+        Log.i("mb-location-altitude", String.valueOf(location.getAltitude()));
     }
 
-    protected void createLocationRequest() {
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(10000);
-        mLocationRequest.setFastestInterval(5000);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-    }
-
-    @Override
-    public void onConnected(Bundle bundle) {
-
-        //  Get the last location
-        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        mCurrentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-
-        if (mCurrentLocation != null) {
-            mCallback.onLocationUpdate(mCurrentLocation);
-        }
-
-        //  Request location updates
-        if (mRequestingLocationUpdates) {
-            createLocationRequest();
-            startLocationUpdates();
-        }
-    }
-
-
-    @Override
-    public void onConnectionSuspended(int i) {
-        mGoogleApiClient.connect();
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-        if (mCallback != null) {
-            mCallback.onLocationFail();
-        }
-    }
-
-    public Location getLastLocation() {
-        return mCurrentLocation;
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-
-        mCurrentLocation = location;
-
-        //  Report the change to listeners
-        if (mCallback != null) {
-            mCallback.onLocationUpdate(location);
+    @SuppressLint("MissingPermission")
+    public void startLocationUpdates() {
+        if (mLocationManager != null && mPermissionGranted) {
+            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
         }
     }
 
     public void stopLocationUpdates() {
-        mRequestingLocationUpdates = false;
-        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
-    }
-
-    protected void startLocationUpdates() {
-        mRequestingLocationUpdates = true;
-        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
+        if (mLocationManager != null && mPermissionGranted) {
+            mLocationManager.removeUpdates(locationListener);
         }
-        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
     }
 
-    public boolean isAccuracyEnough() {
-        return mCurrentLocation.getAccuracy() < MAX_ACCURACY;
+    @SuppressLint("MissingPermission")
+    public Location getLastKnownLocation() {
+        if(mPermissionGranted) {
+            String locationProvider = LocationManager.NETWORK_PROVIDER;  // Or use LocationManager.GPS_PROVIDER
+            mCurrentLocation = mLocationManager.getLastKnownLocation(locationProvider);
+            return mCurrentLocation;
+        }
+        return null;
+    }
+
+    public boolean isPermissionGranted() {
+        return mPermissionGranted;
     }
 
     public interface LocationManagerCallback {

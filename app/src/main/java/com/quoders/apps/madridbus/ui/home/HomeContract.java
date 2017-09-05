@@ -1,4 +1,9 @@
-package com.quoders.apps.madridbus;
+package com.quoders.apps.madridbus.ui.home;
+
+import com.quoders.apps.madridbus.BasePresenter;
+import com.quoders.apps.madridbus.BaseView;
+import com.quoders.apps.madridbus.model.LineBase;
+import com.quoders.apps.madridbus.ui.model.LineUI;
 
 public interface HomeContract {
 
@@ -9,6 +14,8 @@ public interface HomeContract {
         void displayLinesView();
 
         void displayFavoritesView();
+
+        void displayLineRoute(LineUI line);
     }
 
     interface Presenter extends BasePresenter {
@@ -18,5 +25,7 @@ public interface HomeContract {
         void onLinesTabSelected();
 
         void onFavoritesTabSelected();
+
+        void onLineSelected(LineUI line);
     }
 }

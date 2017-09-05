@@ -5,10 +5,20 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_settings">Ajustes</string>
 
-    <string name="tabItemMap">Mapa</string>
-    <string name="tabItemLines">Lineas</string>
-    <string name="tabItemFavorites">Favoritos</string>
+    <string name="navItemMap">Mapa</string>
+    <string name="navItemLines">Lineas</string>
+    <string name="navItemFavorites">Favoritos</string>
+    <string name="error_dialog_generic_title">Error</string>
+    <string name="error_dialog_line_list_message">Error loading list of lines. Please try again later.</string>
+    <string name="error_dialog_route_list_message">Error loading route. Please try again later.</string>
 
+    <string name="dialog_button_neutral">OK</string>
+    <string name="tab_item_route">Route</string>
+    <string name="tab_item_map">Map</string>
+    <string name="error_dialog_stop_arrivals">Unable to retrieve arrivals information. Please try again later.</string>
+    <string name="favorite_added_success">Stop added to favorites list</string>
 
+    <string name="error_dialog_favorites_error_message">Error loading favorites, please try again later.</string>
+    <string name="fav_list_empty">The favorites list is empty</string>
 
 </resources>

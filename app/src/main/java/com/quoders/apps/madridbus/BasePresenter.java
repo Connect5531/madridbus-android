@@ -2,7 +2,7 @@ package com.quoders.apps.madridbus;
 
 public interface BasePresenter {
 
-    void onViewAttached(BaseView view);
+    void start();
 
-    void onViewDetached();
+    void stop();
 }

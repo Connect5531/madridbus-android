@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_toLeftOf="@+id/textViewTimeNext"
+        android:layout_toStartOf="@+id/textViewTimeNext"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/activity_horizontal_margin">
+        <TextView
+            android:id="@+id/textViewLineName"
+            android:layout_width="wrap_content"
+            android:layout_height="16dp"
+            tool:text="Line Name"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:textAppearance="?attr/textAppearanceListItem" />
+        <TextView
+            android:id="@+id/textViewStopName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tool:text="Stop Name"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:textAppearance="?attr/textAppearanceListItem" />
+   </LinearLayout>
+
+    <TextView
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/textViewTimeNext"
+        android:layout_marginLeft="@dimen/activity_horizontal_margin"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/activity_horizontal_margin"
+        android:layout_centerVertical="true"
+        tool:text="5 min"
+        android:textAlignment="center"
+        android:textAppearance="?attr/textAppearanceListItem" />
+
+</RelativeLayout>

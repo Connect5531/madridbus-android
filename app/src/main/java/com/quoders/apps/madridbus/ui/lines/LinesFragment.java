@@ -1,34 +1,43 @@
 package com.quoders.apps.madridbus.ui.lines;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import android.support.v4.widget.ContentLoadingProgressBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.quoders.apps.madridbus.BaseFragment;
+import com.quoders.apps.madridbus.MadridBusApplication;
 import com.quoders.apps.madridbus.R;
-import com.quoders.apps.madridbus.ui.lines.dummy.DummyContent;
-import com.quoders.apps.madridbus.ui.lines.dummy.DummyContent.DummyItem;
+import com.quoders.apps.madridbus.domain.repository.lines.LinesRepositoryModule;
+import com.quoders.apps.madridbus.ui.model.LineUI;
 
-public class LinesFragment extends Fragment {
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
+
+public class LinesFragment extends BaseFragment implements LinesContract.View {
 
     public static final String FRAGMENT_TAG = "com.quoders.apps.madridbus.ui.lines.LinesFragment.FRAGMENT_TAG";
 
-    private OnListFragmentInteractionListener mListener;
+    ContentLoadingProgressBar mProgressBar;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
+    private OnListFragmentInteractionListener mListener;
+    private LinesRecyclerViewAdapter mAdapter;
+
+    @Inject
+    LinesPresenter mPresenter;
+
     public LinesFragment() {
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static LinesFragment newInstance(int columnCount) {
+    public static LinesFragment newInstance() {
         LinesFragment fragment = new LinesFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
@@ -39,23 +48,28 @@ public class LinesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null) {
-        }
+        DaggerLinesComponent.builder()
+                .applicationComponent(((MadridBusApplication)getActivity().getApplication()).getApplicationComponent())
+                .linesPresenterModule(new LinesPresenterModule(this))
+                .linesRepositoryModule(new LinesRepositoryModule())
+                .build().inject(this);
+
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_lines_list, container, false);
-
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(new LinesRecyclerViewAdapter(DummyContent.ITEMS, mListener));
-        }
+        mProgressBar = (ContentLoadingProgressBar)view.findViewById(R.id.progressBarListsList);
+        initLinesListRecyclerView(view);
+        mPresenter.start();
         return view;
+    }
+
+    private void initLinesListRecyclerView(View view) {
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        mAdapter = new LinesRecyclerViewAdapter(new ArrayList<>(), mListener);
+        recyclerView.setAdapter(mAdapter);
     }
 
 
@@ -76,8 +90,46 @@ public class LinesFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void setPresenter(LinesContract.Presenter presenter) {
+
+    }
+
+    @Override
+    public void showProgressBar() {
+        mProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void setLinesList(List<LineUI> resultValues) {
+        mAdapter.setItems(resultValues);
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showErrorLoadingList() {
+        new AlertDialog.Builder(getActivity())
+                .setTitle(R.string.error_dialog_generic_title)
+                .setMessage(R.string.error_dialog_line_list_message)
+                .setNeutralButton(R.string.dialog_button_neutral, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mListener.onLoadingLinesListError();
+                    }
+                })
+                .setCancelable(false)
+                .show();
+    }
+
+    @Override
+    public void dismissProgressBar() {
+        mProgressBar.setVisibility(View.GONE);
+    }
+
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+
+        void onListFragmentInteraction(LineUI item);
+
+        void onLoadingLinesListError();
     }
 }

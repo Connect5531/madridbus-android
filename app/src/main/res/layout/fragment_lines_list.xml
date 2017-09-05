@@ -1,14 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.RecyclerView
-    android:id="@+id/list"
-    android:name="com.quoders.apps.madridbus.ui.lines.LinesFragment"
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
-    app:layoutManager="LinearLayoutManager"
-    tools:context="com.quoders.apps.madridbus.ui.lines.LinesFragment"
-    tools:listitem="@layout/fragment_line_item"/>
+    tools:context="com.quoders.apps.madridbus.ui.lines.LinesFragment">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list"
+        android:name="com.quoders.apps.madridbus.ui.lines.LinesFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutManager="LinearLayoutManager"
+        tools:listitem="@layout/fragment_line_item"/>
+
+    <android.support.v4.widget.ContentLoadingProgressBar
+        android:id="@+id/progressBarListsList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        style="@style/Base.Widget.AppCompat.ProgressBar"
+        android:visibility="gone"/>
+
+</RelativeLayout>

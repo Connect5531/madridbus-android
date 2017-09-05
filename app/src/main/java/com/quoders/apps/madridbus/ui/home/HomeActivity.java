@@ -1,69 +1,78 @@
-package com.quoders.apps.madridbus;
+package com.quoders.apps.madridbus.ui.home;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
-import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
+import com.quoders.apps.madridbus.BaseActivity;
+import com.quoders.apps.madridbus.R;
+import com.quoders.apps.madridbus.model.favorites.FavoriteBase;
+import com.quoders.apps.madridbus.ui.favorites.FavoritesFragment;
 import com.quoders.apps.madridbus.ui.lines.LinesFragment;
-import com.quoders.apps.madridbus.ui.lines.dummy.DummyContent;
 import com.quoders.apps.madridbus.ui.map.HomeMapFragment;
+import com.quoders.apps.madridbus.ui.model.LineUI;
+import com.quoders.apps.madridbus.ui.routes.LineRouteActivity;
 
-public class HomeActivity extends AppCompatActivity implements
+import javax.inject.Inject;
+
+public class HomeActivity extends BaseActivity implements
         HomeContract.View,
         NavigationView.OnNavigationItemSelectedListener,
         HomeMapFragment.OnFragmentInteractionListener,
         LinesFragment.OnListFragmentInteractionListener,
-        TabLayout.OnTabSelectedListener {
+        FavoritesFragment.OnListFragmentInteractionListener {
 
-    public static final int TAB_MAP_POSITION = 0;
-    public static final int TAB_LINES_POSITION = 1;
-    public static final int TAB_FAVORITES_POSITION = 2;
+    @Inject
+    HomePresenter mPresenter;
 
-    private HomeContract.Presenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        DaggerHomeComponent.builder()
+                .applicationComponent(getApplicationComponent())
+                .homePresenterModule(new HomePresenterModule(this))
+                .build().inject(this);
+
+        Toolbar toolbar = initToolBar();
+        initNavigationDrawer(toolbar);
+        initBottomNavigation();
+        displayMapView();
+    }
+
+    private void initBottomNavigation() {
+        BottomNavigationView bottomNavigationView = (BottomNavigationView)findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(
+                item -> {
+                    switch (item.getItemId()) {
+                        case R.id.action_map:
+                            mPresenter.onMapTabSelected();
+                            break;
+                        case R.id.action_list:
+                            mPresenter.onLinesTabSelected();
+                            break;
+                        case R.id.action_favorites:
+                            mPresenter.onFavoritesTabSelected();
+                            break;
+                    }
+                    return true;
+                });
+    }
+
+    private Toolbar initToolBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        initTabLayout();
-
-        initFabSearch();
-
-        initNavigationDrawer(toolbar);
-
-        displayMapView();
-
-        mPresenter = new HomePresenter(this);
-    }
-
-    private void initTabLayout() {
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayoutHome);
-        tabLayout.addOnTabSelectedListener(this);
-    }
-
-    private void initFabSearch() {
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        return toolbar;
     }
 
     private void initNavigationDrawer(Toolbar toolbar) {
@@ -90,14 +99,26 @@ public class HomeActivity extends AppCompatActivity implements
     public void displayLinesView() {
         LinesFragment linesFragment = (LinesFragment) getSupportFragmentManager().findFragmentByTag(LinesFragment.FRAGMENT_TAG);
         if(linesFragment == null) {
-            linesFragment = LinesFragment.newInstance(1);
+            linesFragment = LinesFragment.newInstance();
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayoutHomeContainer, linesFragment).commit();
     }
 
     @Override
     public void displayFavoritesView() {
+        FavoritesFragment favoritesFragment = (FavoritesFragment) getSupportFragmentManager().findFragmentByTag(FavoritesFragment.FRAGMENT_TAG);
+        if(favoritesFragment == null) {
+            favoritesFragment = FavoritesFragment.newInstance(1);
+        }
+        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayoutHomeContainer, favoritesFragment).commit();
 
+    }
+
+    @Override
+    public void displayLineRoute(LineUI line) {
+        Intent intent = new Intent(this, LineRouteActivity.class);
+        intent.putExtra(LineRouteActivity.INTENT_EXTRA_LINE, line);
+        startActivity(intent);
     }
 
     @Override
@@ -151,32 +172,22 @@ public class HomeActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem item) {
+    public void onListFragmentInteraction(LineUI item) {
+        mPresenter.onLineSelected(item);
+    }
+
+    @Override
+    public void onLoadingLinesListError() {
+        displayMapView();
+    }
+
+    @Override
+    public void setPresenter(Object presenter) {
 
     }
 
     @Override
-    public void onTabSelected(TabLayout.Tab tab) {
-        switch (tab.getPosition()) {
-            case TAB_MAP_POSITION:
-                mPresenter.onMapTabSelected();
-                break;
-            case TAB_LINES_POSITION:
-                mPresenter.onLinesTabSelected();
-                break;
-            case TAB_FAVORITES_POSITION:
-                mPresenter.onFavoritesTabSelected();
-                break;
-        }
-    }
-
-    @Override
-    public void onTabUnselected(TabLayout.Tab tab) {
-
-    }
-
-    @Override
-    public void onTabReselected(TabLayout.Tab tab) {
+    public void onListFragmentInteraction(FavoriteBase item) {
 
     }
 }

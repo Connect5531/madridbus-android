@@ -6,7 +6,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_settings">Ajustes</string>
 
-    <string name="tabItemMap">Map</string>
-    <string name="tabItemLines">Lines</string>
-    <string name="tabItemFavorites">Favorites</string>
+    <string name="navItemMap">Map</string>
+    <string name="navItemLines">Lines</string>
+    <string name="navItemFavorites">Favorites</string>
 </resources>
