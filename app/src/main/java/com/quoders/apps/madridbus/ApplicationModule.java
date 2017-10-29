@@ -1,6 +1,7 @@
 package com.quoders.apps.madridbus;
 
 import android.app.Application;
+import android.arch.persistence.room.Room;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
@@ -28,5 +29,11 @@ public class ApplicationModule {
     @Singleton
     SharedPreferences providesSharedPreferences(Application application) {
         return PreferenceManager.getDefaultSharedPreferences(application);
+    }
+
+    @Provides
+    @Singleton
+    AppDatabase providesRoomDatabase(Application application) {
+        return Room.databaseBuilder(application, AppDatabase.class, "mbusdata").build();
     }
 }

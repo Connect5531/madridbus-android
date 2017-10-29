@@ -19,4 +19,5 @@ public interface ApplicationComponent {
 
   SharedPreferences providesSharedPreferences();
   EmtRestApi providesEmtApi();
+  AppDatabase providesRoomDatabase();
 }

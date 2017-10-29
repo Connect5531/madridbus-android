@@ -1,45 +1,49 @@
 package com.quoders.apps.madridbus.model.favorites;
 
 
-import com.quoders.apps.madridbus.model.StopBase;
+import android.arch.persistence.room.Embedded;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
-import java.io.Serializable;
+import com.quoders.apps.madridbus.model.StopEntity;
 
-import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
 
-public class FavoriteBase extends RealmObject implements Serializable {
+@Entity(tableName = "favorite")
+public class FavoriteBase {
 
-    public static final String ID = "id";
-
-    @PrimaryKey
-    private String id;
+    @PrimaryKey @NonNull private String id;
+    @Embedded private StopEntity stopEntity;
     private String stopName;
-    private StopBase stopBase;
     private String timeNext;
 
-
-    public FavoriteBase(String id, StopBase stopBase, String stopName) {
+    @Ignore
+    public FavoriteBase(@NonNull String id, @NonNull StopEntity stopEntity, @NonNull String stopName) {
         this.id = id;
-        this.stopBase = stopBase;
+        this.stopEntity = stopEntity;
         this.stopName = stopName;
     }
     public FavoriteBase() {
         this.id = "";
-        this.stopBase = new StopBase();
+        this.stopEntity = new StopEntity();
         this.stopName = "";
     }
 
-    public StopBase getStop() {
-        return stopBase;
+    public StopEntity getStopEntity() {
+        return stopEntity;
     }
 
-    public String getName() {
+    public String getStopName() {
         return stopName;
     }
 
     public String getId() {
         return id;
+    }
+
+    public String getTimeNext() {
+        return timeNext;
     }
 
     public void setId(String id) {
@@ -50,12 +54,8 @@ public class FavoriteBase extends RealmObject implements Serializable {
         this.stopName = stopName;
     }
 
-    public void setStopBase(StopBase stopBase) {
-        this.stopBase = stopBase;
-    }
-
-    public String getTimeNext() {
-        return timeNext;
+    public void setStopEntity(StopEntity stopEntity) {
+        this.stopEntity = stopEntity;
     }
 
     public void setTimeNext(String timeNext) {
